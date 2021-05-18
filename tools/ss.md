@@ -1,3 +1,6 @@
+   ss : Socket Statistics  
+   -m 参数显示内容含义解释：  
+   
               skmem:(r<rmem_alloc>,rb<rcv_buf>,t<wmem_alloc>,tb<snd_buf>,
                             f<fwd_alloc>,w<wmem_queued>,o<opt_mem>,
                             bl<back_log>,d<sock_drop>)
