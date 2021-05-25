@@ -1,6 +1,8 @@
    ss : Socket Statistics  
    dst/src dport/sport 语法  
-   > 可以通过 dst/src/dport/sprot 语法来过滤连接的来源和目标，来源端口和目标端口。 
+   > 可以通过 dst/src/dport/sprot 语法来过滤连接的来源和目标，来源端口和目标端口。   
+   > ss -nlp sport eq 2049  
+   > ss -ntp src 10.20.101.1 dport eq 2049  
 
    -m 参数显示内容含义解释：  
    
