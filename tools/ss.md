@@ -1,4 +1,7 @@
    ss : Socket Statistics  
+   dst/src dport/sport 语法  
+   > 可以通过 dst/src/dport/sprot 语法来过滤连接的来源和目标，来源端口和目标端口。 
+
    -m 参数显示内容含义解释：  
    
               skmem:(r<rmem_alloc>,rb<rcv_buf>,t<wmem_alloc>,tb<snd_buf>,
