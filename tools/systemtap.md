@@ -1,6 +1,6 @@
 # 运行脚本参数
-> $1 ... $<NN>把参数解释成数字
-  @1 ... @<NN>把参数解释成字符串
+> $1 ... $<NN>把参数解释成数字  
+  @1 ... @<NN>把参数解释成字符串  
        In addition, script arguments given at the end of the command line may be inserted.  Use $1 ... $<NN> for insertion unquoted, @1 ...
        @<NN>  for  insertion as a string literal.  The number of arguments may be accessed through $# (as an unquoted number) or through @#
        (as a quoted number).  These may be used at any place a token may begin, including within the preprocessing stage.  Reference to  an
