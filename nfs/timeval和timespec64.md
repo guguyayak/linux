@@ -37,3 +37,4 @@ void ktime_get_real_ts64(struct timespec64 *ts)
 }
 EXPORT_SYMBOL(ktime_get_real_ts64);
 ```
+# 新版的ktime_get_real_ts64替换了旧版的getnstimeofday64
