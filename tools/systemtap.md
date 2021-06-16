@@ -30,3 +30,22 @@
               @cast(task, "task_struct", "kernel<linux/sched.h>")->tgid
               @cast(task, "task_struct",
                     "kernel<linux/sched.h><linux/fs_struct.h>")->fs->umask
+# @defined 判断成员是否存在
+```c
+  # cat inode-watch.stp
+probe kernel.function ("vfs_write"),
+      kernel.function ("vfs_read")
+{
+  if (@defined($file->f_path->dentry)) {
+    dev_nr = $file->f_path->dentry->d_inode->i_sb->s_dev
+    inode_nr = $file->f_path->dentry->d_inode->i_ino
+  } else {
+    dev_nr = $file->f_dentry->d_inode->i_sb->s_dev
+    inode_nr = $file->f_dentry->d_inode->i_ino
+  }
+  if (dev_nr == ($1 << 20 | $2) # major/minor device
+      && inode_nr == $3)
+    printf ("%s(%d) %s 0x%x/%u\n",
+      execname(), pid(), ppfunc(), dev_nr, inode_nr)
+}
+```
