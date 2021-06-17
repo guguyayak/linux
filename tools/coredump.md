@@ -122,3 +122,44 @@ struct dentry ffff97584a3d9680（地址值）
 
 函数调用参数传递：在x86系统上，ebx, ecx, edx, esi和edi按照顺序存放前五个参数。
 ```
+# 堆栈分析
+ 1、IP: [] ceph_mdsc_handle_mdsmap+0x96/0x630 [ceph]-----------------------------0x96是一个偏移量，从函数起始地址开始+150
+
+2、找到对应版本的.o文件
+```c
+gdb ceph.o
+
+disassemble ceph_mdsc_handle_mdsmap
+
+(gdb) disassemble ceph_mdsc_handle_mdsmap
+
+Dump of assembler code for functionceph_mdsc_handle_mdsmap:
+
+…
+
+0x0000000000006d8f<+127>:     pop    %r15
+
+0x0000000000006d91<+129>:    pop    %rbp
+
+0x0000000000006d92<+130>:    retq
+
+0x0000000000006d93<+131>:    mov    (%rax),%rsi
+
+0x0000000000006d96<+134>:    mov    %rdi,%rbx
+
+0x0000000000006d99<+137>:    add    $0x10,%rax
+
+0x0000000000006d9d<+141>:    mov    -0x8(%rax),%rdi
+
+0x0000000000006da1<+145>:    mov    %rax,0x58(%rsp)
+
+0x0000000000006da6<+150>:    mov    (%rbx),%rax
+
+
+
+(gdb) info line *0x0000000000006da6
+
+Line 3815 of"/project/V100R002B01D007SP02/kernel4.4.0/fs/ceph/mds_client.c"
+
+starts at address 0x6da6 and ends at 0x6da9.
+```
