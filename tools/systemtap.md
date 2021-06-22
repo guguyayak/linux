@@ -49,3 +49,51 @@ probe kernel.function ("vfs_write"),
       execname(), pid(), ppfunc(), dev_nr, inode_nr)
 }
 ```
+# 执行文件
+```c
+[root@c75n50p9 lmm]# cat nfs-setfattr.stp
+probe begin
+{
+        time_s = gettimeofday_s();
+        datetime_str = tz_ctime(time_s);
+        print(datetime_str."\n");
+}
+
+probe kernel.function("setxattr")
+{
+        printf("file %s\n", user_string($name))
+}
+
+probe kernel.function("vfs_setxattr").call
+{
+        printf("vfs_setxattr name=%s\n", kernel_string($name));
+        printf("setxattr: %s, getattr: %s\n", symname($dentry->d_inode->i_op->setxattr), symname($dentry->d_inode->i_op->getattr))
+}
+
+probe module("nfsv3").function("nfs3_setxattr").call
+{
+                printf("nfs3_setxattr dentry %p, name=%s, flags = %d\n", $dentry, kernel_string($name), $flags);
+}
+
+probe timer.s(1)
+{
+        time_s = gettimeofday_s();
+        datetime_str = tz_ctime(time_s);
+        print(datetime_str."\n");
+}
+```
+# 输出
+> file user.user1  
+vfs_setxattr name=user.user1  
+setxattr: nfs3_setxattr, getattr: 0xffffffffc0bacbc0  
+nfs3_setxattr dentry 0xffffa041df21a540, name=user.user1, flags = 0  
+# 函数接口
+```c
+int nfs3_setxattr(struct dentry *dentry, const char *name,
+	     const void *value, size_t size, int flags);
+vfs_setxattr(struct dentry *dentry, const char *name, const void *value,
+		size_t size, int flags);
+static long
+setxattr(struct dentry *d, const char __user *name, const void __user *value,
+	 size_t size, int flags);
+```
