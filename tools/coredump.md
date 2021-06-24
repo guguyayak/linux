@@ -163,3 +163,129 @@ Line 3815 of"/project/V100R002B01D007SP02/kernel4.4.0/fs/ceph/mds_client.c"
 
 starts at address 0x6da6 and ends at 0x6da9.
 ```
+# 一个crash分析实例
+```c
+[root@c65n50p66 ws]# crash ../vmlinux 
+
+crash 6.1.0-5.el6
+Copyright (C) 2002-2012  Red Hat, Inc.
+Copyright (C) 2004, 2005, 2006, 2010  IBM Corporation
+Copyright (C) 1999-2006  Hewlett-Packard Co
+Copyright (C) 2005, 2006, 2011, 2012  Fujitsu Limited
+Copyright (C) 2006, 2007  VA Linux Systems Japan K.K.
+Copyright (C) 2005, 2011  NEC Corporation
+Copyright (C) 1999, 2002, 2007  Silicon Graphics, Inc.
+Copyright (C) 1999, 2000, 2001, 2002  Mission Critical Linux, Inc.
+This program is free software, covered by the GNU General Public License,
+and you are welcome to change it and/or distribute copies of it under
+certain conditions.  Enter "help copying" to see the conditions.
+This program has absolutely no warranty.  Enter "help warranty" for details.
+ 
+GNU gdb (GDB) 7.3.1
+Copyright (C) 2011 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-unknown-linux-gnu"...
+
+      KERNEL: ../vmlinux
+    DUMPFILE: /dev/crash
+        CPUS: 32
+        DATE: Mon Jun 21 16:00:38 2021
+      UPTIME: 2 days, 23:52:46
+LOAD AVERAGE: 0.08, 0.05, 0.00
+       TASKS: 1093
+    NODENAME: c65n50p66
+     RELEASE: 2.6.32-431.el6.x86_64
+     VERSION: #1 SMP Fri Nov 22 03:15:09 UTC 2013
+     MACHINE: x86_64  (1796 Mhz)
+      MEMORY: 63.9 GB
+         PID: 3281
+     COMMAND: "crash"
+        TASK: ffff880455e2e040  [THREAD_INFO: ffff880455ec2000]
+         CPU: 8
+       STATE: TASK_RUNNING (ACTIVE)
+
+crash> mod -S .
+     MODULE       NAME                     SIZE  OBJECT FILE
+ffffffffa137a800  kfnccli                211132  ./kfnccli.ko 
+mod: cannot find or load object file for aesni_intel module
+ffffffffa15fdde0  knal_without_rdma    12339633  ./knal_without_rdma.ko 
+ffffffffa1fe5860  dlm                    371966  ./dlm.ko 
+ffffffffa2284b80  parastor              2982706  ./parastor.ko 
+ffffffffa23232a0  rctld                  192012  ./rctld.ko 
+crash>           
+crash> 
+crash> kmem -s ffff8805f269ec80
+CACHE            NAME                 OBJSIZE  ALLOCATED     TOTAL  SLABS  SSIZE
+ffff881072da29c0 parastor_fsc_sb          384          2        10      1     4k
+SLAB              MEMORY            TOTAL  ALLOCATED  FREE
+ffff8805f269e000  ffff8805f269e080     10          2     8
+FREE / [ALLOCATED]
+  [ffff8805f269ec80]
+crash> p (fsc_sb_t *)0xffff8805f269ec80
+$3 = (fsc_sb_t *) 0xffff8805f269ec80
+
+crash> p *$3 > fsb
+
+crash> p &$3->s_inodes
+$5 = (struct list_head *) 0xffff8805f269ec90
+
+crash> list 0xffff8805f269ec90
+ffff8805f269ec90
+ffff880489c4cd70
+
+crash> kmem -s ffff880489c4cd70
+CACHE            NAME                 OBJSIZE  ALLOCATED     TOTAL  SLABS  SSIZE
+ffff8810657d35c0 parastor_lcli_inode_t   1088          7        21      3     8k
+SLAB              MEMORY            TOTAL  ALLOCATED  FREE
+ffff880489c4c000  ffff880489c4c080      7          2     5
+FREE / [ALLOCATED]
+  [ffff880489c4cd40]
+
+crash> p (fsc_inode_t *)0x ffff880489c4cd40
+$6 = (fsc_inode_t *) 0xffff880489c4cd40
+crash> p *$6 >finode
+crash> p &$6->i_dentry
+$8 = (struct list_head *) 0xffff880489c4cd80
+crash> list 0xffff880489c4cd80
+ffff880489c4cd80
+ffff8805f2aaccb0
+crash> p (fsc_dentry_t *)0x ffff8805f2aaccb0
+$9 = (fsc_dentry_t *) 0xffff8805f2aaccb0
+crash> p *$9> fdentry
+crash> kmem -s ffff8805f2aaccb0
+CACHE            NAME                 OBJSIZE  ALLOCATED     TOTAL  SLABS  SSIZE
+ffff88106c9d2980 parastor_fsc_dentry      256          7        45      3     4k
+SLAB              MEMORY            TOTAL  ALLOCATED  FREE
+ffff8805f2aac000  ffff8805f2aac080     15          3    12
+FREE / [ALLOCATED]
+  [ffff8805f2aacc80]
+crash> p (fsc_dentry_t *)0x ffff8805f2aacc80
+$11 = (fsc_dentry_t *) 0xffff8805f2aacc80
+crash> p *$11 > fdentry
+crash> p (lcli_inode_t *)0xffff880489c4cd40
+$13 = (lcli_inode_t *) 0xffff880489c4cd40
+crash> p &$13->vinode
+$14 = (struct inode *) 0xffff880489c4cef8
+crash> p *$14 > vinode
+crash> p &$14->i_dentry
+$16 = (struct list_head *) 0xffff880489c4cf28
+crash> list 0xffff880489c4cf28
+ffff880489c4cf28
+ffff88048d114570
+crash> kmem -s ffff88048d114570
+CACHE            NAME                 OBJSIZE  ALLOCATED     TOTAL  SLABS  SSIZE
+ffff880877f40b40 dentry                   192      56969     59140   2957     4k
+SLAB              MEMORY            TOTAL  ALLOCATED  FREE
+ffff88048d114000  ffff88048d114080     20          7    13
+FREE / [ALLOCATED]
+  [ffff88048d114500]
+crash> p (struct dentry *)0x ffff88048d114500
+$17 = (struct dentry *) 0xffff88048d114500
+crash> p *$17 >vdentry
+crash> p /x 2147483676
+$19 = 0x8000001c
+crash> 
+```
