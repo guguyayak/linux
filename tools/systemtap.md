@@ -1,3 +1,10 @@
+# 环境配置
+1. 下载3个依赖的包，这里包的版本需要与CentOS内核的版本一致  
+> 下载kernel-devel-[版本号]、kernel-debuginfo-[版本号]、kernel-debuginfo-common-[版本号] 
+ 
+注：直接使用yum下载上述3个包，默认使用最新的安装包，所以需要手动从网上下载与CentOS内核版本一致的安装包  
+2.使用yum安装systemtap systemtap-runtime  
+> yum -y install systemtap systemtap-runtime  
 # 运行脚本参数
 > $1 ... $<NN>把参数解释成数字  
   @1 ... @<NN>把参数解释成字符串  
