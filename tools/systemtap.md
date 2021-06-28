@@ -10,6 +10,14 @@
 
 # [官方实例](https://sourceware.org/systemtap/examples/)
 
+> general/callgraph.stp - Callgraph Tracing  
+keywords: SIMPLE TRACE CALLGRAPH  
+Print a timed per-thread microsecond-timed nested callgraph. The first parameter names the function probe points to trace.  
+sample usage in general/callgraph.txt  
+[root@node1 systemtap]# stap callgraph.stp 'module("nfsd").function("nfsd3_proc_write")'  
+  0 nfsd(6098):->nfsd3_proc_write  
+  356 nfsd(6098):<-nfsd3_proc_write  
+
 # 运行脚本参数
 > $1 ... $<NN>把参数解释成数字  
   @1 ... @<NN>把参数解释成字符串  
