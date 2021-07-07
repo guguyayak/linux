@@ -127,6 +127,67 @@ probe kernel.function("build_open_flags").call {
 
 }
 ```
+
+# 统计函数调用次数及平均时延
+
+[源代码](https://sourceware.org/systemtap/examples/general/func_time_stats.stp)
+
+```c
+[root@xjlm_sg001_oStor1 tmp]# cat func_time_stats.stp
+#! /usr/bin/env stap
+/*
+ * func_time_stats.stp
+ * usage: func_time_stats.stp function_probe
+ */
+global start, intervals, start2, intervals2, start3, intervals3
+
+probe $1 { start[pid()] = gettimeofday_us() }
+probe $1.return
+{
+  t = gettimeofday_us()
+  old_t = start[pid()]
+  if (old_t) intervals <<< t - old_t
+  delete start[pid()]
+}
+
+probe $2 { start2[pid()] = gettimeofday_us() }
+probe $2.return
+{
+  t2 = gettimeofday_us()
+  old_t2 = start2[pid()]
+  if (old_t2) intervals2 <<< t2 - old_t2
+  delete start2[pid()]
+}
+
+probe $3 { start3[pid()] = gettimeofday_us() }
+probe $3.return
+{
+  t3 = gettimeofday_us()
+  old_t3 = start3[pid()]
+  if (old_t3) intervals3 <<< t3 - old_t3
+  delete start3[pid()]
+}
+
+probe end
+{
+  printf("intervals min:%dus avg:%dus max:%dus count:%d variance:%d\n",
+         @min(intervals), @avg(intervals), @max(intervals),
+         @count(intervals), @variance(intervals, 3))
+  print(@hist_log(intervals));
+
+  printf("intervals2 min:%dus avg:%dus max:%dus count:%d variance:%d\n",
+          @min(intervals2), @avg(intervals2), @max(intervals2),
+          @count(intervals2), @variance(intervals2, 3))
+  print(@hist_log(intervals2));
+
+  printf("intervals3 min:%dus avg:%dus max:%dus count:%d variance:%d\n",
+          @min(intervals3), @avg(intervals3), @max(intervals3),
+          @count(intervals3), @variance(intervals3, 3))
+  print(@hist_log(intervals3));
+}
+```
+## 使用举例
+> stap -v func_time_stats.stp 'module("nfsd").function("nfsd_write")' 'module("nfsd").function("nfsd3_proc_commit")' 'module("nfsd").function("nfsd_open")'
 # 一个用过的脚本
 ```c
 probe begin
