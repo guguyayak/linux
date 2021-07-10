@@ -69,7 +69,19 @@ probe kernel.function ("vfs_write"),
       execname(), pid(), ppfunc(), dev_nr, inode_nr)
 }
 ```
-# 语法
+# 函数
+```shell
+tid()当前线程id
+uid()当前用户id
+cpu()当前cpu号
+gettimeofday_s()从1970开始的秒
+ctime() 转换时间从秒到日期
+pp()描述当前探针的字符串
+thread_indent()当一个探针的处理没结束又触发下一个探针的时候，可以进行缩进打印，非常便于观察。
+name 只能用于系统调用
+target()当使用-x参数绑定进程的时候，可使用来判断pid()==target()，从而过滤其他进程触发的事件。
+```
+# 变量
 ```shell
 $#是什么意思？（表示的是命令行中给出的参数的个数）
 
