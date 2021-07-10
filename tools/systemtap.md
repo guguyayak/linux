@@ -69,6 +69,40 @@ probe kernel.function ("vfs_write"),
       execname(), pid(), ppfunc(), dev_nr, inode_nr)
 }
 ```
+# 语法
+```shell
+$#是什么意思？（表示的是命令行中给出的参数的个数）
+
+如果$#>1, 紧接着判断if(tid() in trace)
+
+%( CONDITION %? TRUE-TOKENS %)
+
+%( CONDITION %? TRUE-TOKENS %: FALSE-TOKENS %)                          -> condition    ?   true  : false           %：预编命令
+
+stap -e '%( CONFIG_UTRACE == "y" %? probe begin {printf("true\n"); exit();} %: probe begin {printf("false\n"); exit();} %)'
+
+获取指定地址的字节：kernel_char(address)
+
+kernel_short(address)
+
+kernel_int(address)
+
+kernel_long(address)
+
+kernel_string(address)
+
+kernel_string_n(address,n)
+
+为了方便获取参数，systemtap提供了一个方法
+
+直接使用$$var就可以打印函数参数和变量。
+
+如果使用$$locals,就是打印局部变量
+
+$$parms就只打印函数阐述
+
+$$return 打印返回值，只在返回探针能用。
+```
 # 执行文件
 ```c
 [root@c75n50p9 lmm]# cat nfs-setfattr.stp
