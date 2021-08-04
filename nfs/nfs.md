@@ -21,3 +21,20 @@ async          dirsync        loop           noac           nointr         owner
 atime          exec           mand           noacl          noiversion     port=          rootcontext=   timeo=
 auto           fg             mounthost=     noatime        nomand         proto=         rsize=         udp
 ```
+# sunrpc
+## svc_export_cache
+```c
+static struct cache_detail svc_export_cache_template = {
+	.owner		= THIS_MODULE,
+	.hash_size	= EXPORT_HASHMAX,
+	.name		= "nfsd.export",
+	.cache_put	= svc_export_put,
+	.cache_request	= svc_export_request,
+	.cache_parse	= svc_export_parse,
+	.cache_show	= svc_export_show,
+	.match		= svc_export_match,
+	.init		= svc_export_init,
+	.update		= export_update,
+	.alloc		= svc_export_alloc,
+};
+```
