@@ -289,3 +289,29 @@ crash> p /x 2147483676
 $19 = 0x8000001c
 crash> 
 ```
+# mount 信息
+```c
+crash> mount
+       mount       SUPERBLK        TYPE         DEVNAME     DIRNAME
+       ffff9bxxxxxx ffffxxxxxxx   .......
+       crash> p (struct mount *)0xffff9bxxxxxx
+       $1=(struct mount *)ffff9bxxxxxx
+       crash> p &$1->mnt
+       $2 = (struct vfsmount *)0xffff9bxxxxxxx20
+       
+       vfsmount结构经常在struct path结构中，search后强转成struct path结构
+       
+       crash> search 0xffff9bxxxxxxx20
+       ffffxxxxxxx38:0xffff9bxxxxxxx20
+       crash> p (struct path *)0xffffxxxxxxx38
+       $3 = (struct path *)0xffffxxxxxxx38
+       p *$3
+       $4 = {
+          mnt = 0xffffxxxxxxxx20,
+          dentry = 0xffffxxxxxc0
+       }
+       crash> files -d 0xffffxxxxxc0
+       
+       foreach files
+       kmem -s | grep file
+```
