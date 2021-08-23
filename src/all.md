@@ -47,7 +47,9 @@ lockd_create_procfs(void)
 > get_ds获得kernel的内存访问地址范围（IA32是4GB）  
 > set_fs是设置当前的地址访问限制值  
 > get_fs是取得当前的地址访问限制值。  
-> 进程由用户态进入核态，linux进程的task_struct结构中的成员addr_limit也应该由0xBFFFFFFF变为0xFFFFFFFF(addr_limit规定了进程有用户态核内核态情况下的虚拟地址空间访问范围，在用户态，addr_limit成员值是0xBFFFFFFF也就是有3GB的虚拟内存空间，在核心态，是0xFFFFFFFF,范围扩展了1GB)。
+> 进程由用户态进入核态，linux进程的task_struct结构中的成员addr_limit也应该由0xBFFFFFFF变为0xFFFFFFFF(addr_limit规定了进程有用户态核内核态情况下的虚拟地址空间访问范围，在用户态，addr_limit成员值是0xBFFFFFFF也就是有3GB的虚拟内存空间，在核心态，是0xFFFFFFFF,范围扩展了1GB)。  
+> 使用这三个函数是为了安全性。为了保证用户态的地址所指向空间有效，函数会做一些检查工作。
+如果set_fs(KERNEL_DS),函数将跳过这些检查。  
 ```c
 mm_segment_t fs;
 fs = get_fs();
