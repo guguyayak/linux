@@ -83,3 +83,13 @@ struct file *filp_open(const char *filename, int flags, umode_t mode)
 }
 EXPORT_SYMBOL(filp_open);
 ```
+# snprintf
+```c
+static int rpc_ntop4(const struct sockaddr *sap,
+                     char *buf, const size_t buflen)
+{
+        const struct sockaddr_in *sin = (struct sockaddr_in *)sap;
+
+        return snprintf(buf, buflen, "%pI4", &sin->sin_addr);
+}
+```
