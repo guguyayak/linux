@@ -54,6 +54,16 @@ static inline bool rpc_cmp_addr(const struct sockaddr *sap1,
 	return false;
 }
 ```
+## 线程睡眠位置
+```c
+static struct svc_xprt *svc_get_next_xprt(struct svc_rqst *rqstp, long timeout)
+{
+	if (likely(rqst_should_sleep(rqstp)))
+		time_left = schedule_timeout(timeout);
+	else
+		__set_current_state(TASK_RUNNING);
+}
+```
 # rpcdebug
 ```sass
 [root@dk4 ~]# rpcdebug -vh
