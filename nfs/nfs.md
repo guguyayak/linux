@@ -38,19 +38,7 @@ static struct cache_detail svc_export_cache_template = {
 	.alloc		= svc_export_alloc,
 };
 ```
-# rpcdebug
-```sass
-[root@dk4 ~]# rpcdebug -vh
-usage: rpcdebug [-v] [-h] [-m module] [-s flags...|-c flags...]
-       set or cancel debug flags.
-
-Module     Valid flags
-rpc        xprt call debug nfs auth bind sched trans svcsock svcdsp misc cache all
-nfs        vfs dircache lookupcache pagecache proc xdr file root callback client mount fscache pnfs pnfs_ld state all
-nfsd       sock fh export svc proc fileop auth repcache xdr lockd all
-nlm        svc client clntlock svclock monitor clntsubs svcsubs hostcache xdr all
-```
-# rpc_cmp_addr
+## rpc_cmp_addr
 ```c
 static inline bool rpc_cmp_addr(const struct sockaddr *sap1,
 				const struct sockaddr *sap2)
@@ -65,4 +53,16 @@ static inline bool rpc_cmp_addr(const struct sockaddr *sap1,
 	}
 	return false;
 }
+```
+# rpcdebug
+```sass
+[root@dk4 ~]# rpcdebug -vh
+usage: rpcdebug [-v] [-h] [-m module] [-s flags...|-c flags...]
+       set or cancel debug flags.
+
+Module     Valid flags
+rpc        xprt call debug nfs auth bind sched trans svcsock svcdsp misc cache all
+nfs        vfs dircache lookupcache pagecache proc xdr file root callback client mount fscache pnfs pnfs_ld state all
+nfsd       sock fh export svc proc fileop auth repcache xdr lockd all
+nlm        svc client clntlock svclock monitor clntsubs svcsubs hostcache xdr all
 ```
