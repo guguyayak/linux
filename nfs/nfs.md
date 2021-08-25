@@ -50,3 +50,19 @@ nfs        vfs dircache lookupcache pagecache proc xdr file root callback client
 nfsd       sock fh export svc proc fileop auth repcache xdr lockd all
 nlm        svc client clntlock svclock monitor clntsubs svcsubs hostcache xdr all
 ```
+# rpc_cmp_addr
+```c
+static inline bool rpc_cmp_addr(const struct sockaddr *sap1,
+				const struct sockaddr *sap2)
+{
+	if (sap1->sa_family == sap2->sa_family) {
+		switch (sap1->sa_family) {
+		case AF_INET:
+			return rpc_cmp_addr4(sap1, sap2);
+		case AF_INET6:
+			return rpc_cmp_addr6(sap1, sap2);
+		}
+	}
+	return false;
+}
+```
