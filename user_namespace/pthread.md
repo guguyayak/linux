@@ -42,3 +42,73 @@ int main()
         return 0;
 }
 ```
+# eventfd
+```c
+#include <sys/eventfd.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
+
+int main(int argc, char**argv[])
+{
+    int efd, j, i = 0;
+    uint64_t u;
+    ssize_t s;
+
+    if (argc < 2)
+    {
+        printf("number of argc is wrong!\n");
+        return 0;
+    }
+
+    efd = eventfd(0,0);
+    if (-1 == efd)
+    {
+        printf("failed to create eventfd\n");
+    }
+
+    switch(fork())
+    {
+        case 0:
+        {
+            for(j=1; j<argc;j++)
+            {
+                printf("child writing %s to efd\n", argv[j]);
+                u = strtoull(argv[j], NULL, 0);
+                s = write(efd, &u, sizeof(uint64_t));
+                if (s!=sizeof(uint64_t))
+                {
+                    printf("write efd failed\n");
+                }
+                sleep(1);
+            }
+            printf("Child completed write loop\n");
+            exit(0);
+        }
+        default:
+                printf("Parents about to read\n");
+                while (++i < 3) {
+                        s = read(efd, &u, sizeof(uint64_t));
+                        if (s != sizeof(uint64_t))
+                        {
+                                printf("read efd failed\n");
+                        }
+                        printf("Parents read %llu (0x%llx) from efd\n", u, u);
+                }
+                break;
+        case -1:
+        {
+            printf("fork error\n");
+        }
+    }
+
+        close(efd);
+        s = write(efd, &u, sizeof(uint64_t));
+        if (s!=sizeof(uint64_t))
+                printf("write efd failed %d\n", s);
+        wait();
+
+    return 0;
+}
+```
