@@ -6,6 +6,24 @@ pthread_attr_init(&attr);
 pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 pthread_create(&tid, &attr, THREAD_FUNCTION, arg);
 ```
+# pidwait and daemon
+- 1. rpc.statd fork子进程执行sm-notify，并waitpid(pid, NULL, 0)；
+- 2. 而子进程执行sm-notify（通过execv），sm-notify 调用daemon(0, 0)，waitpid就会收到返回值，不比等待sm-notify完全执行完成。
+```c
+// rpc.statd:
+switch (pid = fork()) {
+case 0:
+	run_sm_notify(out_port);
+	break;
+case -1:
+	break;
+default:
+	waitpid(pid, NULL, 0);
+}
+
+// sm-notify
+daemon(0, 0)
+```
 # pthread_mutex_t
 ```c
 #include <stdio.h>
