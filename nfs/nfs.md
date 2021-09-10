@@ -79,5 +79,8 @@ nlm        svc client clntlock svclock monitor clntsubs svcsubs hostcache xdr al
 # 性能调优
 ## [slot table entries](https://docs.microsoft.com/en-us/azure/azure-netapp-files/performance-linux-concurrency-session-slots)
 ```
-NFSv3 does not have a mechanism to negotiate concurrency between the client and the server. The client and the server each defines its limit without consulting the other. For the best performance, you should line up the maximum number of client-side sunrpc slot table entries with that supported without pushback on the server. When a client overwhelms the server network stack’s ability to process a workload, the server responds by decreasing the window size for the connection, which is not an ideal performance scenario.
+NFSv3 does not have a mechanism to negotiate concurrency between the client and the server. The client and the server each defines its limit without consulting the other.  
+For the best performance, you should line up the maximum number of client-side sunrpc slot table entries with that supported without pushback on the server.   
+When a client overwhelms the server network stack’s ability to process a workload, the server responds by decreasing the window size for the connection,   
+which is not an ideal performance scenario.  
 ```
