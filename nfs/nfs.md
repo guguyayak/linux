@@ -84,3 +84,4 @@ For the best performance, you should line up the maximum number of client-side s
 When a client overwhelms the server network stack’s ability to process a workload, the server responds by decreasing the window size for the connection,   
 which is not an ideal performance scenario.  
 ```
+> Littles Law: (concurrency = operation rate × latency in seconds)  
