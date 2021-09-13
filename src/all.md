@@ -1,3 +1,56 @@
+# 内核执行用户态进程
+```c
+static int
+nfsd4_umh_cltrack_upcall(char *cmd, char *arg, char *env0, char *env1)
+{
+	char *envp[3];
+	char *argv[4];
+	int ret;
+
+	if (unlikely(!cltrack_prog[0])) {
+		dprintk("%s: cltrack_prog is disabled\n", __func__);
+		return -EACCES;
+	}
+
+	dprintk("%s: cmd: %s\n", __func__, cmd);
+	dprintk("%s: arg: %s\n", __func__, arg ? arg : "(null)");
+	dprintk("%s: env0: %s\n", __func__, env0 ? env0 : "(null)");
+	dprintk("%s: env1: %s\n", __func__, env1 ? env1 : "(null)");
+
+	envp[0] = env0;
+	envp[1] = env1;
+	envp[2] = NULL;
+
+	argv[0] = (char *)cltrack_prog;
+	argv[1] = cmd;
+	argv[2] = arg;
+	argv[3] = NULL;
+
+	ret = call_usermodehelper(argv[0], argv, envp, UMH_WAIT_PROC);
+	/*
+	 * Disable the upcall mechanism if we're getting an ENOENT or EACCES
+	 * error. The admin can re-enable it on the fly by using sysfs
+	 * once the problem has been fixed.
+	 */
+	if (ret == -ENOENT || ret == -EACCES) {
+		dprintk("NFSD: %s was not found or isn't executable (%d). "
+			"Setting cltrack_prog to blank string!",
+			cltrack_prog, ret);
+		cltrack_prog[0] = '\0';
+	}
+	dprintk("%s: %s return value: %d\n", __func__, cltrack_prog, ret);
+
+	return ret;
+}
+```
+## log
+```
+Sep 13 03:41:10 dk4 kernel: nfsd4_umh_cltrack_upcall: cmd: create
+Sep 13 03:41:10 dk4 kernel: nfsd4_umh_cltrack_upcall: arg: 4c696e7578204e465376342e30206c6f63616c686f73742e6c6f63616c646f6d61696e2f3139322e3136382e3138322e323034
+Sep 13 03:41:10 dk4 kernel: nfsd4_umh_cltrack_upcall: env0: NFSDCLTRACK_CLIENT_HAS_SESSION=N
+Sep 13 03:41:10 dk4 kernel: nfsd4_umh_cltrack_upcall: env1: NFSDCLTRACK_GRACE_START=1631243448
+Sep 13 03:41:10 dk4 kernel: nfsd4_umh_cltrack_upcall: /sbin/nfsdcltrack return value: 0
+```
 # 堆栈打印
 > dump_stack();
 # 函数名
