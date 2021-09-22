@@ -1,3 +1,26 @@
+# kthread_run 内核起线程做一件事
+```c
+#include <linux/kthread.h>
+
+/*
+ * Reclaim all locks on server host. We do this by spawning a separate
+ * reclaimer thread.
+ */
+void
+nlmclnt_recovery(struct nlm_host *host)
+{
+	struct task_struct *task;
+
+	if (!host->h_reclaiming++) {
+		nlm_get_host(host);
+		task = kthread_run(reclaimer, host, "%s-reclaim", host->h_name);
+		if (IS_ERR(task))
+			printk(KERN_ERR "lockd: unable to spawn reclaimer "
+				"thread. Locks for %s won't be reclaimed! "
+				"(%ld)\n", host->h_name, PTR_ERR(task));
+	}
+}
+```
 # 内核执行用户态进程
 ```c
 static int
