@@ -91,6 +91,52 @@ Sep 13 03:41:10 dk4 kernel: nfsd4_umh_cltrack_upcall: /sbin/nfsdcltrack return v
 把任务交给kworker线程处理：schedule_delayed_work(&timeout_work, timeout);  
 由work找到ceph_osd_client：container_of(work, struct ceph_osd_client, timeout_work.work);  
 让任务定时循环执行：在handle_timeout函数末尾重新调用schedule_delayed_work(&timeout_work, timeout);  
+## 示例
+```c
+struct delayed_work {
+	struct work_struct work;
+	struct timer_list timer;
+
+	/* target workqueue and CPU ->timer uses to queue ->work */
+	struct workqueue_struct *wq;
+	int cpu;
+};
+
+struct lockd_net {
+	...
+	struct delayed_work grace_period_end;
+	...
+};
+
+static void grace_ender(struct work_struct *grace)
+{
+	struct delayed_work *dwork = container_of(grace, struct delayed_work,
+						  work);
+	struct lockd_net *ln = container_of(dwork, struct lockd_net,
+					    grace_period_end);
+
+	locks_end_grace(&ln->lockd_manager);
+}
+
+static void set_grace_period(struct net *net)
+{
+	unsigned long grace_period = get_lockd_grace_period();
+	struct lockd_net *ln = net_generic(net, lockd_net_id);
+
+	locks_start_grace(net, &ln->lockd_manager);
+	cancel_delayed_work_sync(&ln->grace_period_end);
+	schedule_delayed_work(&ln->grace_period_end, grace_period);
+}
+
+static int lockd_init_net(struct net *net)
+{
+	struct lockd_net *ln = net_generic(net, lockd_net_id);
+
+	INIT_DELAYED_WORK(&ln->grace_period_end, grace_ender);
+	...
+	return 0;
+}
+```
 # procfs
 ## procfs 创建
 ```c
