@@ -38,6 +38,8 @@ hlist_for_each_entry(file, &nlm_files[hash], f_list)
 ```c
 #define NLM_HOST_NRHASH		32
 static struct hlist_head	nlm_server_hosts[NLM_HOST_NRHASH];
+
+struct hlist_head *chain;
 chain = &nlm_server_hosts[nlm_hash_address(ni.sap)];
 hlist_add_head(&host->h_hash, chain);
 struct nlm_host {
