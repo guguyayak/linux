@@ -49,6 +49,26 @@ struct nlm_host {
 
 unsigned int hash;
 return hash & (NLM_HOST_NRHASH - 1);
+
+hlist_del_init(&host->h_hash);
+
+/**
+ * hlist_for_each_entry_safe - iterate over list of given type safe against removal of list entry
+ * @pos:	the type * to use as a loop cursor.
+ * @n:		another &struct hlist_node to use as temporary storage
+ * @head:	the head for your list.
+ * @member:	the name of the hlist_node within the struct.
+ */
+#define hlist_for_each_entry_safe(pos, n, head, member) 		\
+	for (pos = hlist_entry_safe((head)->first, typeof(*pos), member);\
+	     pos && ({ n = pos->member.next; 1; });			\
+	     pos = hlist_entry_safe(n, typeof(*pos), member))
+
+	struct hlist_node *next;
+	struct nlm_host	*host;
+	
+hlist_for_each_entry_safe(host, next, chain, h_hash)
+	//host是要操作的成员，chain是hash链表头；
 ```
 
 # list
