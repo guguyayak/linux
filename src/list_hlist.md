@@ -85,4 +85,36 @@ INIT_LIST_HEAD(&file->f_blocks);
 
     struct list_head name = LIST_HEAD_INIT(name)
 ```
+# container_of 及示例
+```c
+/**
+ * container_of - cast a member of a structure out to the containing structure
+ * @ptr:	the pointer to the member.
+ * @type:	the type of the container struct this is embedded in.
+ * @member:	the name of the member within the struct.
+ *
+ */
+#define container_of(ptr, type, member) ({			\
+	const typeof( ((type *)0)->member ) *__mptr = (ptr);	\
+	(type *)( (char *)__mptr - offsetof(type,member) );})
+
+struct delayed_work {
+	struct work_struct work;
+	struct timer_list timer;
+
+	/* target workqueue and CPU ->timer uses to queue ->work */
+	struct workqueue_struct *wq;
+	int cpu;
+};
+
+static void grace_ender(struct work_struct *grace)
+{
+	struct delayed_work *dwork = container_of(grace, struct delayed_work,
+						  work);
+	struct lockd_net *ln = container_of(dwork, struct lockd_net,
+					    grace_period_end);
+
+	locks_end_grace(&ln->lockd_manager);
+}
+```
 # 链表详细操作见内核源码[include/linux/list.h](https://github.com/torvalds/linux/blob/master/include/linux/list.h)文件
