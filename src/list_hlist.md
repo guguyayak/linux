@@ -34,6 +34,20 @@ INIT_HLIST_NODE(&file->f_list);
 ```c
 hlist_for_each_entry(file, &nlm_files[hash], f_list)
 ```
+## hash_list 使用示例
+```c
+#define NLM_HOST_NRHASH		32
+static struct hlist_head	nlm_server_hosts[NLM_HOST_NRHASH];
+chain = &nlm_server_hosts[nlm_hash_address(ni.sap)];
+hlist_add_head(&host->h_hash, chain);
+struct nlm_host {
+	struct hlist_node	h_hash;		/* doubly linked list */
+	...
+}
+
+return hash & (NLM_HOST_NRHASH - 1);
+```
+
 # list
 - 初始化
 ```c
