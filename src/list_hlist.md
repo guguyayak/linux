@@ -45,6 +45,7 @@ struct nlm_host {
 	...
 }
 
+unsigned int hash;
 return hash & (NLM_HOST_NRHASH - 1);
 ```
 
