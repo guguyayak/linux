@@ -165,6 +165,35 @@ lockd_create_procfs(void)
 	return 0;
 }
 ```
+## 文件读写
+```c
+static ssize_t
+fault_disconnect_read(struct file *filp, char __user *user_buf,
+		      size_t len, loff_t *offset)
+{
+	char *buffer = (char *)filp->private_data;
+	size_t size;
+
+	size = sprintf(buffer, "%u\n", rpc_inject_disconnect);
+	return simple_read_from_buffer(user_buf, len, offset, buffer, size);
+}
+
+static ssize_t
+fault_disconnect_write(struct file *filp, const char __user *user_buf,
+		       size_t len, loff_t *offset)
+{
+	char buffer[16];
+
+	if (len >= sizeof(buffer))
+		len = sizeof(buffer) - 1;
+	if (copy_from_user(buffer, user_buf, len))
+		return -EFAULT;
+	buffer[len] = '\0';
+	if (kstrtouint(buffer, 10, &rpc_inject_disconnect))
+		return -EINVAL;
+	return len;
+}
+```
 # get_fs set_fs
 > get_ds获得kernel的内存访问地址范围（IA32是4GB）  
 > set_fs是设置当前的地址访问限制值  
