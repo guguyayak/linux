@@ -84,6 +84,7 @@ Sep 13 03:41:10 dk4 kernel: nfsd4_umh_cltrack_upcall: /sbin/nfsdcltrack return v
 > #define KERNEL_VERSION(a,b,c) (((a)<<16)+((b)<<8)+(c))  
 # 原子变量读取
 > kref_read(&freeme->ref)  
+
 # 定时器任务初始化
 > struct ceph_osd_client {...; struct delayed_work timeout_work; ...}  
 > schedule_delayed_work(&timeout_work, timeout);  
@@ -134,6 +135,15 @@ static int lockd_init_net(struct net *net)
 
 	INIT_DELAYED_WORK(&ln->grace_period_end, grace_ender);
 	...
+	return 0;
+}
+
+static int
+lockd(void *vrqstp)
+{
+...
+	cancel_delayed_work_sync(&ln->grace_period_end);
+	locks_end_grace(&ln->lockd_manager);
 	return 0;
 }
 ```
