@@ -56,3 +56,5 @@ example:
 ```
 ## 打印调用栈
 > dump_stack();
+# 函数名
+> strcmp(current->comm, "nfsd");
