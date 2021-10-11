@@ -2,6 +2,7 @@
 ## c文件 & Makefile
 ```c
 [root@dk4 kmallock_test]# cat kmalloc_test.c
+#include <linux/module.h>
 #include <linux/types.h>
 #include <linux/slab.h>
 
@@ -25,6 +26,7 @@ void __exit kmalloc_test_exit(void)
 
 module_init(kmalloc_test_init)
 module_exit(kmalloc_test_exit)
+MODULE_LICENSE("GPL");
 
 [root@dk4 kmallock_test]# cat Makefile
 obj-m := kmalloc_test.o
