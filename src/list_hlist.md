@@ -118,3 +118,61 @@ static void grace_ender(struct work_struct *grace)
 }
 ```
 # 链表详细操作见内核源码[include/linux/list.h](https://github.com/torvalds/linux/blob/master/include/linux/list.h)文件
+
+# sunrpc 缓存hash_table设计
+```c
+struct cache_detail {
+	...
+	int			hash_size;
+	struct cache_head **	hash_table;
+	rwlock_t		hash_lock;
+	...
+}
+
+struct cache_head {
+	struct cache_head * next;
+	time_t		expiry_time;	/* After time time, don't use the data */
+	time_t		last_refresh;
+	struct kref	ref;
+	unsigned long	flags;
+};
+
+struct cache_head *sunrpc_cache_lookup(struct cache_detail *detail,
+				       struct cache_head *key, int hash)
+{
+	struct cache_head **head,  **hp;
+	struct cache_head *new = NULL, *freeme = NULL;
+
+	head = &detail->hash_table[hash];
+
+	...
+
+	write_lock(&detail->hash_lock);
+
+	/* check if entry appeared while we slept */
+	for (hp=head; *hp != NULL ; hp = &(*hp)->next) {
+		struct cache_head *tmp = *hp;
+		if (detail->match(tmp, key)) {
+			if (cache_is_expired(detail, tmp)) {
+				*hp = tmp->next;
+				tmp->next = NULL;
+				detail->entries --;
+				freeme = tmp;
+				break;
+			}
+			cache_get(tmp);
+			write_unlock(&detail->hash_lock);
+			cache_put(new, detail);
+			return tmp;
+		}
+	}
+	...
+}
+```
+## sunrpc_cache_lookup 如何移除过期缓存项
+-1. 使用二级指针方便操作一级指针；  
+-2. *hp != NULL 二级指针解引用转一级指针；  
+	一级指针不为空：指针指向的对象实际存在，可以用此指针操作实际对象；  
+-3. 删除：*hp 用二级指针操作一级指针，*hp = tmp->next 指针赋值，改变指针所指对象；  
+	原来：struct cache_head *tmp = *hp；这里就改变了 *hp；  
+-4. 可以安全的删除 tmp 所指对象了；  
