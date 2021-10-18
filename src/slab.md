@@ -33,3 +33,5 @@ static void nfsd4_free_file_rcu(struct rcu_head *rcu)
 	kmem_cache_free(file_slab, fp);
 }
 ```
+
+# [unable to find new object create with kmem_cache_create() in /proc/slabinfo](https://stackoverflow.com/questions/24858424/unable-to-find-new-object-create-with-kmem-cache-create-in-proc-slabinfo/24872230)
