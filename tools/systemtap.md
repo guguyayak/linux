@@ -5,6 +5,8 @@
 注：直接使用yum下载上述3个包，默认使用最新的安装包，所以需要手动从网上下载与CentOS内核版本一致的安装包  
 2.使用yum安装systemtap systemtap-runtime  
 > yum -y install systemtap systemtap-runtime  
+## 基本测试
+> stap -e 'probe begin{printf("Hello, World"); exit();}'  
 
 # 文档：/usr/share/systemtap/
 
