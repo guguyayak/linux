@@ -264,6 +264,26 @@ probe end
 ```
 ## 使用举例
 > stap -v func_time_stats.stp 'module("nfsd").function("nfsd_write")' 'module("nfsd").function("nfsd3_proc_commit")' 'module("nfsd").function("nfsd_open")'
+
+# 打印结构体
+```c
+struct file_ra_state {
+	pgoff_t start;			/* where readahead started */
+	unsigned int size;		/* # of readahead pages */
+	unsigned int async_size;	/* do asynchronous readahead when
+					   there are only # of pages ahead */
+
+	unsigned int ra_pages;		/* Maximum readahead window */
+	unsigned int mmap_miss;		/* Cache miss stat for mmap accesses */
+	loff_t prev_pos;		/* Cache last read() position */
+};
+
+probe kernel.function ("ondemand_readahead").call
+{
+	if (execname() == "dd")
+		printf ("%s ra$: %s\n", ppfunc(), $ra$);
+}
+```
 # 一个用过的脚本
 ```c
 probe begin
