@@ -55,3 +55,10 @@ static int rpc_ntop4(const struct sockaddr *sap,
         return snprintf(buf, buflen, "%pI4", &sin->sin_addr);
 }
 ```
+# kallsyms_lookup_name
+```
+kallsyms_lookup_name本身也是一个内核符号，如果这个符号被导出了，
+那么就可以在内核模块中调用kallsyms_lookup_name("do_page_fault")来获得do_page_fault的符号地址。
+
+这种方法的局限性在于kallsyms_lookup_name本身不一定被导出。
+```
