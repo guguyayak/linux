@@ -284,6 +284,8 @@ probe kernel.function ("ondemand_readahead").call
 		printf ("%s ra$: %s\n", ppfunc(), $ra$);
 }
 ```
+# 加载指定ko
+> stap -v -d /home/parastor/tools/client/knal.ko lcli.stp   
 # 一个用过的脚本
 ```c
 probe begin
