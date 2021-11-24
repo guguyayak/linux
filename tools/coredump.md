@@ -315,3 +315,5 @@ crash> mount
        foreach files
        kmem -s | grep file
 ```
+# 打印全局变量
+> p [全局变量]   
