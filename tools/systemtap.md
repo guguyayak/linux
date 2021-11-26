@@ -12,6 +12,8 @@
 
 # [官方实例](https://sourceware.org/systemtap/examples/)
 
+# [文档介绍](https://systemtap.bruceding.me/variable.html)
+
 > general/callgraph.stp - Callgraph Tracing  
 keywords: SIMPLE TRACE CALLGRAPH  
 Print a timed per-thread microsecond-timed nested callgraph. The first parameter names the function probe points to trace.  
