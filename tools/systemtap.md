@@ -283,7 +283,7 @@ struct file_ra_state {
 probe kernel.function ("ondemand_readahead").call
 {
 	if (execname() == "dd")
-		printf ("%s ra$: %s\n", ppfunc(), $ra$);
+		printf ("%s ra$: %s\n", ppfunc(), $ra$); // 多层打印： $ra$$
 }
 ```
 # 加载指定ko
