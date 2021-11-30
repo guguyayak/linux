@@ -6,7 +6,7 @@
 2.使用yum安装systemtap systemtap-runtime  
 > yum -y install systemtap systemtap-runtime  
 ## 基本测试
-> stap -e 'probe begin{printf("Hello, World"); exit();}'  
+> stap -e 'probe begin{printf("Hello, World\n"); exit();}'  
 
 # 文档：/usr/share/systemtap/
 
