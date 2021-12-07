@@ -15,3 +15,5 @@
 ## [useful-URL](https://github.com/guguyayak/hello-world/blob/master/useful-URL.md)
 
 ## [RFC文档下载](https://www.rfc-editor.org/)
+
+## [内核镜像](https://linux-mirrors.fnal.gov/linux/)
