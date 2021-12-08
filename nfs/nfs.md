@@ -85,3 +85,37 @@ When a client overwhelms the server network stack’s ability to process a workl
 which is not an ideal performance scenario.  
 ```
 > Littles Law: (concurrency = operation rate × latency in seconds)  
+
+# nfs 结构体转换宏
+```c
+// include/linux/nfs_fs.h
+static inline struct nfs_inode *NFS_I(const struct inode *inode)
+{
+	return container_of(inode, struct nfs_inode, vfs_inode);
+}
+
+static inline struct nfs_server *NFS_SB(const struct super_block *s)
+{
+	return (struct nfs_server *)(s->s_fs_info);
+}
+
+static inline struct nfs_fh *NFS_FH(const struct inode *inode)
+{
+	return &NFS_I(inode)->fh;
+}
+
+static inline struct nfs_server *NFS_SERVER(const struct inode *inode)
+{
+	return NFS_SB(inode->i_sb);
+}
+
+static inline struct rpc_clnt *NFS_CLIENT(const struct inode *inode)
+{
+	return NFS_SERVER(inode)->client;
+}
+
+static inline const struct nfs_rpc_ops *NFS_PROTO(const struct inode *inode)
+{
+	return NFS_SERVER(inode)->nfs_client->rpc_ops;
+}
+```
