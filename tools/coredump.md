@@ -317,3 +317,15 @@ crash> mount
 ```
 # 打印全局变量
 > p [全局变量]   
+# sym打印函数名
+```sh
+crash> struct notifier_block lockd_inetaddr_notifier
+struct notifier_block {
+  notifier_call = 0xffffffffc0820fe0 <create_lockd_listener+112>, 
+  next = 0xffffffffc1f67bd0, 
+  priority = 0
+}
+crash> struct notifier_block 0xffffffff8e9046e0^C
+crash> sym 0xffffffffc0820fe0
+ffffffffc0820fe0 (t) lockd_inetaddr_event [lockd] /usr/src/debug/kernel-3.10.0-862.el7/linux-3.10.0-862.el7.x86_64/fs/lockd/svc.c: 199
+```
