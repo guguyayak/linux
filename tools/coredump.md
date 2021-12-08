@@ -329,3 +329,32 @@ crash> struct notifier_block 0xffffffff8e9046e0^C
 crash> sym 0xffffffffc0820fe0
 ffffffffc0820fe0 (t) lockd_inetaddr_event [lockd] /usr/src/debug/kernel-3.10.0-862.el7/linux-3.10.0-862.el7.x86_64/fs/lockd/svc.c: 199
 ```
+# vtop 查看虚拟地址和物理地址映射
+```sh
+crash> vtop ffffffffc1f67bd0
+VIRTUAL           PHYSICAL        
+ffffffffc1f67bd0  (not mapped)
+
+PML4 DIRECTORY: ffffffff8e80e000
+PAGE DIRECTORY: e0ba12067
+   PUD: e0ba12ff8 => e0ba14067
+   PMD: e0ba14078 => 40e106067
+   PTE: 40e106b38 => 0
+
+crash> vtop ffffffffc1f11bd0
+VIRTUAL           PHYSICAL        
+ffffffffc1f11bd0  4faf32bd0       
+
+PML4 DIRECTORY: ffffffff8e80e000
+PAGE DIRECTORY: e0ba12067
+   PUD: e0ba12ff8 => e0ba14067
+   PMD: e0ba14078 => 40e106067
+   PTE: 40e106888 => 80000004faf32063
+  PAGE: 4faf32000
+
+      PTE         PHYSICAL   FLAGS
+80000004faf32063  4faf32000  (PRESENT|RW|ACCESSED|DIRTY|NX)
+
+      PAGE        PHYSICAL      MAPPING       INDEX CNT FLAGS
+ffffd76693ebcc80 4faf32000                0        0  1 6fffff00000000
+```
