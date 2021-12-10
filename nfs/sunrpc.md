@@ -1,3 +1,17 @@
+# socket 处理接口函数所在文件
+```c
+/*
+ * linux/net/sunrpc/svcsock.c
+ * These are the RPC server socket internals.
+ */
+ 
+ /*
+ * linux/net/sunrpc/xprtsock.c
+ * Client-side transport implementation for sockets.
+ */
+```
+
+
 # nfs client
 ## xs_setup_tcp xprt数据接收函数初始化
 ```c
