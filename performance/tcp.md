@@ -14,3 +14,20 @@ send-Q 表示网路发送队列(send queue)
 
 这两个值通常应该为0，如果不为0可能是有问题的。packets在两个队列里都不应该有堆积状态。可接受短暂的非0情况。
 ```
+# TX(发送) 和 RX(接收)
+# MTU值，全名为：Maximum Transmission Unit 最大传输单元。
+> 顾名思义，PMTU自动发现就是赋予应用程序权力让其自主发现端到端链路的MTU值，并绕开数据包分片这个坑。   
+> 目前支持PMTU的协议为TCP以及UDP。   
+# 拥塞窗口cwnd
+# struct tcp_sock
+```c
+struct tcp_sock：
+u32     rcv_nxt;        /* What we want to receive next         */
+u32     copied_seq;     /* Head of yet unread data              */
+u32     snd_wnd;        /* The window we expect to receive      */
+u32     snd_cwnd;       /* Sending congestion window            */
+u32     rcv_wnd;        /* Current receiver window              */
+u32     srtt_us;        /* smoothed round trip time << 3 in usecs */
+u32     snd_una;        /* First byte we want an ack for        */
+u32     write_seq;      /* Tail(+1) of data held in tcp send buffer */
+```
