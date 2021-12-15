@@ -30,4 +30,5 @@ u32     rcv_wnd;        /* Current receiver window              */
 u32     srtt_us;        /* smoothed round trip time << 3 in usecs */
 u32     snd_una;        /* First byte we want an ack for        */
 u32     write_seq;      /* Tail(+1) of data held in tcp send buffer */
+u32     snd_ssthresh;   /* Slow start size threshold            */
 ```
