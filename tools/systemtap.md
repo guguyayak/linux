@@ -103,15 +103,19 @@ probe kernel.function ("vfs_write"),
 ```
 # 函数
 ```shell
-tid()当前线程id
-uid()当前用户id
-cpu()当前cpu号
-gettimeofday_s()从1970开始的秒
-ctime() 转换时间从秒到日期
-pp()描述当前探针的字符串
-thread_indent()当一个探针的处理没结束又触发下一个探针的时候，可以进行缩进打印，非常便于观察。
-name 只能用于系统调用
-target()当使用-x参数绑定进程的时候，可使用来判断pid()==target()，从而过滤其他进程触发的事件。
+tid(),      当前线程id
+pid(),      当前进程id
+uid(),      当前用户id
+execname(),    当前进程名称
+cpu(),         当前cpu编号
+gettimeofday_s(),      秒时间戳
+get_cycles(),     硬件周期计数器快照
+pp(),             探测点事件名称
+ppfunc(),         探测点触发的函数名称
+$$var, 上下文中存在 $var， 可以使用该变量
+print_backtrace(),         打印内核栈
+print_ubacktrace(),        打印用户空间栈
+thread_indent()，打印N个空格，常用于打印多级函数时的缩进(配合target()选择目标进程)
 ```
 # 变量
 ```shell
