@@ -63,3 +63,6 @@ enum {
         TCP_MAX_STATES  /* Leave at the end! */
 };
 ```
+# iperf
+> server: iperf3 -p 8100 -s   
+> client: iperf3 -c 40.41.41.232 -p 8100 -P 40  
