@@ -66,3 +66,4 @@ enum {
 # iperf
 > server: iperf3 -p 8100 -s   
 > client: iperf3 -c 40.41.41.232 -p 8100 -P 40  
+# dstat -- 查看CPU、磁盘、网络等使用情况
