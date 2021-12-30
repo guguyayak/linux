@@ -64,3 +64,55 @@ net.ipv4.tcp_fack = 0
 # on variable-speed WANs but not for us
 net.ipv4.tcp_slow_start_after_idle = 0 
 ```
+# tcp_mem & wmem & rmem
+```
+tcp_mem - vector of 3 INTEGERs: min, pressure, max
+        min: below this number of pages TCP is not bothered about its
+        memory appetite.
+
+        pressure: when amount of memory allocated by TCP exceeds this number
+        of pages, TCP moderates its memory consumption and enters memory
+        pressure mode, which is exited when memory consumption falls
+        under "min".
+
+        max: number of pages allowed for queueing by all TCP sockets.
+
+        Defaults are calculated at boot time from amount of available
+        memory.
+
+tcp_rmem - vector of 3 INTEGERs: min, default, max
+        min: Minimal size of receive buffer used by TCP sockets.
+        It is guaranteed to each TCP socket, even under moderate memory
+        pressure.
+        Default: 1 page
+
+        default: initial size of receive buffer used by TCP sockets.
+        This value overrides net.core.rmem_default used by other protocols.
+        Default: 87380 bytes. This value results in window of 65535 with
+        default setting of tcp_adv_win_scale and tcp_app_win:0 and a bit
+        less for default tcp_app_win. See below about these variables.
+
+        max: maximal size of receive buffer allowed for automatically
+        selected receiver buffers for TCP socket. This value does not override
+        net.core.rmem_max.  Calling setsockopt() with SO_RCVBUF disables
+        automatic tuning of that socket's receive buffer size, in which
+        case this value is ignored.
+        Default: between 87380B and 6MB, depending on RAM size.
+
+tcp_wmem - vector of 3 INTEGERs: min, default, max
+        min: Amount of memory reserved for send buffers for TCP sockets.
+        Each TCP socket has rights to use it due to fact of its birth.
+        Default: 1 page
+
+        default: initial size of send buffer used by TCP sockets.  This
+        value overrides net.core.wmem_default used by other protocols.
+        It is usually lower than net.core.wmem_default.
+        Default: 16K
+
+        max: Maximal amount of memory allowed for automatically tuned
+        send buffers for TCP sockets. This value does not override
+        net.core.wmem_max.  Calling setsockopt() with SO_SNDBUF disables
+        automatic tuning of that socket's send buffer size, in which case
+        this value is ignored.
+        Default: between 64K and 4MB, depending on RAM size.
+```
