@@ -32,3 +32,35 @@ u32     snd_una;        /* First byte we want an ack for        */
 u32     write_seq;      /* Tail(+1) of data held in tcp send buffer */
 u32     snd_ssthresh;   /* Slow start size threshold            */
 ```
+# [tcp performance-tuning](https://cromwell-intl.com/open-source/performance-tuning/tcp.html)
+```
+### /etc/sysctl.d/02-netIO.conf
+### Kernel settings for TCP
+
+# Provide adequate buffer memory.
+# rmem_max and wmem_max are TCP max buffer size
+# settable with setsockopt(), in bytes
+# tcp_rmem and tcp_wmem are per socket in bytes.
+# tcp_mem is for all TCP streams, in 4096-byte pages.
+# The following are suggested on IBM's
+# High Performance Computing page
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+net.core.rmem_default = 16777216
+net.core.wmem_default = 16777216
+net.ipv4.tcp_rmem = 4096 87380 16777216
+net.ipv4.tcp_wmem = 4096 87380 16777216
+# This server might have 200 clients simultaneously, so:
+#   max(tcp_wmem) * 2 * 200 / 4096
+net.ipv4.tcp_mem = 1638400 1638400 1638400
+
+# Disable TCP SACK (TCP Selective Acknowledgement),
+# DSACK (duplicate TCP SACK), and FACK (Forward Acknowledgement)
+net.ipv4.tcp_sack = 0
+net.ipv4.tcp_dsack = 0
+net.ipv4.tcp_fack = 0
+
+# Disable the gradual speed increase that's useful
+# on variable-speed WANs but not for us
+net.ipv4.tcp_slow_start_after_idle = 0 
+```
