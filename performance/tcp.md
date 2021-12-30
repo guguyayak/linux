@@ -64,8 +64,11 @@ net.ipv4.tcp_fack = 0
 # on variable-speed WANs but not for us
 net.ipv4.tcp_slow_start_after_idle = 0 
 ```
-# tcp_mem & wmem & rmem
+# ipv4 tcp_mem & wmem & rmem
 ```
+Documentation/networking/ip-sysctl.txt
+/proc/sys/net/ipv4/* Variables:
+
 tcp_mem - vector of 3 INTEGERs: min, pressure, max
         min: below this number of pages TCP is not bothered about its
         memory appetite.
