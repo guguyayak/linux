@@ -64,6 +64,30 @@ net.ipv4.tcp_fack = 0
 # on variable-speed WANs but not for us
 net.ipv4.tcp_slow_start_after_idle = 0 
 ```
+# /proc/sys/net/core 
+```
+Documentation/sysctl/net.txt
+
+rmem_default
+------------
+
+The default setting of the socket receive buffer in bytes.
+
+rmem_max
+--------
+
+The maximum receive socket buffer size in bytes.
+
+wmem_default
+------------
+
+The default setting (in bytes) of the socket send buffer.
+
+wmem_max
+--------
+
+The maximum send socket buffer size in bytes.
+```
 # ipv4 tcp_mem & wmem & rmem
 ```
 Documentation/networking/ip-sysctl.txt
