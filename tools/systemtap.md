@@ -54,6 +54,7 @@ probe kernel.function("sk_stream_wait_memory").return
 ```
 # 脚本执行时长设定
 > probe timer.s(60) { exit(); }   
+> -T TIME    terminate the script after TIME seconds   
 # 运行脚本参数
 > $1 ... $<NN>把参数解释成数字  
   @1 ... @<NN>把参数解释成字符串  
