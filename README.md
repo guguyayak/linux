@@ -9,7 +9,7 @@
 - [shell窗口自定义指令](https://github.com/guguyayak/linux/blob/main/tools/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4.md)
 ## [src](https://github.com/guguyayak/linux/tree/main/src)
 一些linux源码摘录
-- [sys_call.md](https://githubsys_call.md.com/guguyayak/linux/blob/main/src/sys_call.md)
+- [sys_call.md](https://github.com/guguyayak/linux/blob/main/src/sys_call.md)
 - [list_hlist](https://github.com/guguyayak/linux/blob/main/src/list_hlist.md)
 
 ## [useful-URL](https://github.com/guguyayak/hello-world/blob/master/useful-URL.md)
