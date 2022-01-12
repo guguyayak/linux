@@ -406,3 +406,6 @@ probe timer.s(1)
         print(datetime_str."\n");
 }
 ```
+# 跟踪某个文件下的函数
+> 跟踪一个函数：stap -ve 'probe kernel.function("remove_proc_entry@proc/generic.c") {printf("%s\n", kernel_string($name))}'   
+> 跟踪所有函数：stap -ve 'probe kernel.function("*@proc/generic.c") {printf("%s\n", kernel_string($name))}'   
