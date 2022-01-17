@@ -30,3 +30,6 @@ done
 [root@c75n81p77 wangsen]# ls /lib/modules/3.10.0-862.el7.x86_64/extra/
 dac.ko  dlm.ko  hrdma.ko  kfnccli.ko  knal.ko  kutil.ko  parastor.ko
 ```
+# [火焰图](https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html) [tools in git](https://github.com/brendangregg/FlameGraph)
+> perf record -F 99 -p 13204 -g -- sleep 30   
+> perf script | ./stackcollapse-perf.pl > out.perf-folded && ./flamegraph.pl out.perf-folded > perf.svg   
