@@ -37,3 +37,5 @@ all:
 clean:
         rm -f *.ko *.o *.mod.o *.mod.c .*.cmd *.symvers modul* *.unsigned
 ```
+# modprobe 加载模块传参配置文件
+> /etc/modprobe.d/lockd.conf   
