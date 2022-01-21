@@ -30,6 +30,8 @@ done
 [root@c75n81p77 wangsen]# ls /lib/modules/3.10.0-862.el7.x86_64/extra/
 dac.ko  dlm.ko  hrdma.ko  kfnccli.ko  knal.ko  kutil.ko  parastor.ko
 ```
+## perf top -g -C 0-5
+> -C后是CPU id，可以是一个值，可以是个范围值   
 # [火焰图](https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html) [tools in git](https://github.com/brendangregg/FlameGraph)
 > perf record -F 99 -p 13204 -g -- sleep 30   
 > perf report -n --stdio   
