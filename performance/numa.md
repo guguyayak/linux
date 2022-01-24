@@ -3,7 +3,7 @@
 # 查看node信息
 > 查看node物理内存信息：cat /sys/devices/system/node/[nodeid]/meminfo   
 > 查看有物理内存的node：cat /sys/devices/system/node/has_normal_memory    
-# 查看网卡物理上连接哪个muna node
+# 查看网卡物理上连接哪个 numa node
 >  cat /sys/class/net/enp4s0f1/device/numa_node
 # 关于numa的一个调优实例
 ```
