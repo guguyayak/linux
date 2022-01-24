@@ -1,3 +1,11 @@
+# iperf
+> server: iperf3 -p 8100 -s   
+> client: iperf3 -c 40.41.41.232 -p 8100 -P 40  
+# dstat -- 查看CPU、磁盘、网络等使用情况
+# mpstat 30 -- 查看CPU使用情况
+# [火焰图](https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html) [tools in git](https://github.com/brendangregg/FlameGraph)
+# htop查看CPU使用率
+
 # [tcp_trace.stp](https://sourceware.org/systemtap/examples/network/tcp_trace.stp)
 # 打印列解释
 ```
@@ -63,9 +71,3 @@ enum {
         TCP_MAX_STATES  /* Leave at the end! */
 };
 ```
-# iperf
-> server: iperf3 -p 8100 -s   
-> client: iperf3 -c 40.41.41.232 -p 8100 -P 40  
-# dstat -- 查看CPU、磁盘、网络等使用情况
-# mpstat 30 -- 查看CPU使用情况
-# [火焰图](https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html) [tools in git](https://github.com/brendangregg/FlameGraph)
