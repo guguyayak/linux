@@ -1,7 +1,9 @@
 # iperf
 > server: iperf3 -p 8100 -s   
 > client: iperf3 -c 40.41.41.232 -p 8100 -P 40  
+> 服务端iperf绑核：taskset -c 0-7 iperf -s
 # dstat -- 查看CPU、磁盘、网络等使用情况
+> 查看网卡速率：dstat -nf   
 # mpstat 30 -- 查看CPU使用情况
 # [火焰图](https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html) [tools in git](https://github.com/brendangregg/FlameGraph)
 # htop查看CPU使用率
