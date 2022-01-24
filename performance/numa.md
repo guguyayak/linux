@@ -14,3 +14,4 @@
 3、把没有插内存的node上的core都屏蔽了；
 nfsd线程绑核：ps -elf|grep "\[nfsd\]" | awk '{print $4}'|while read pid;do taskset -pc 0-7 $pid;done
 ```
+# [转：numa介绍](https://blog.csdn.net/yk_wing4/article/details/87474172)
