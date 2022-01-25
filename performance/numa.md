@@ -16,6 +16,7 @@
 3、把没有插内存的node上的core都屏蔽了；
 nfsd线程绑核：ps -elf|grep "\[nfsd\]" | awk '{print $4}'|while read pid;do taskset -pc 0-7 $pid;done
 ```
+# 获取页大小：getconf PAGE_SIZE
 # 屏蔽CPU core
 > grub里面有个isolcpus可以指定需要屏蔽的core的列表   
 ```
