@@ -1,4 +1,4 @@
-# #define PAGE_MASK      (~(PAGE_SIZE-1))
+# define PAGE_MASK      (~(PAGE_SIZE-1))
 # 内核slab使用
 ```c
 static struct kmem_cache *file_slab;
