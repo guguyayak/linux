@@ -16,6 +16,14 @@
 3、把没有插内存的node上的core都屏蔽了；
 nfsd线程绑核：ps -elf|grep "\[nfsd\]" | awk '{print $4}'|while read pid;do taskset -pc 0-7 $pid;done
 或者：ps -ef | grep "\[nfsd\]" | awk '{print $2}' | xargs  -i taskset -pc 0-7 {}
+
+测试结果：
+单节点，38nfs客户端对35服务端节点；
+服务端bypass（写缓存，bypass dataio）：echo w > /proc/hdcfs/cli_bypass
+测试执行：iozone -s 2g -r 1m -i 0 -+n -t 64 -I
+前面测试：577MB/s
+屏蔽无numa内存的CPU，把nfsd线程绑核：800MB/s
+提升比：(800-577)/577 = 38%
 ```
 # 获取页大小：getconf PAGE_SIZE
 # 屏蔽CPU core
