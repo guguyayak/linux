@@ -15,6 +15,7 @@
 2、网卡插在cpu1上，nfsd如果在CPU2上，执行就会慢一倍；
 3、把没有插内存的node上的core都屏蔽了；
 nfsd线程绑核：ps -elf|grep "\[nfsd\]" | awk '{print $4}'|while read pid;do taskset -pc 0-7 $pid;done
+或者：ps -ef | grep "\[nfsd\]" | awk '{print $2}' | xargs  -i taskset -pc 0-7 {}
 ```
 # 获取页大小：getconf PAGE_SIZE
 # 屏蔽CPU core
