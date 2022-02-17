@@ -46,6 +46,10 @@ menuentry 'Kylin Linux Advanced Server (4.19.90-25.2.v2101.gfb01.ky10.aarch64) V
         linux   /vmlinuz-4.19.90-25.2.v2101.gfb01.ky10.aarch64 root=/dev/mapper/klas-root ro crashkernel=1024M rd.lvm.lv=klas/root rd.lvm.lv=klas/swap acpi=on video=VGA-1:640x480-32@60me smmu.bypassdev=0x1000:0x17 smmu.bypassdev=0x1000:0x15 video=efifb:off video=VGA-1:640x480-32@60me isolcpus=8-31,40-63,72-95,104-127
         initrd /initramfs-4.19.90-25.2.v2101.gfb01.ky10.aarch64.img
 }
-
+```
+> 查看屏蔽的core：isolcpus=8-31,40-63,72-95,104-127
+```
+[root@v10node38 lmm]# cat /proc/cmdline
+BOOT_IMAGE=/vmlinuz-4.19.90-25.2.v2101.gfb01.ky10.aarch64 root=UUID=007b46ac-4958-411e-b0cf-4f1dbc9276c4 ro crashkernel=1024m acpi=on video=VGA-1:640x480-32@60me smmu.bypassdev=0x1000:0x17 smmu.bypassdev=0x1000:0x15 crashkernel=1024M,high video=efifb:off video=VGA-1:640x480-32@60me isolcpus=8-31,40-63,72-95,104-127
 ```
 # [转：numa介绍](https://blog.csdn.net/yk_wing4/article/details/87474172)
