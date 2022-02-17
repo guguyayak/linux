@@ -40,4 +40,5 @@ static void nfsd4_free_file_rcu(struct rcu_head *rcu)
 # [slab介绍](https://blog.simowce.com/2015/11/01/linux-memory-managent-slab-allocator-and-kmalloc/)
 > 为什么使用slab？   
 1. linux系统的内存管理使用伙伴系统，最小单元是 page，4k。当要申请小内存时，会造成浪费。slab可解决此问题，因为slab中对象是固定大小的，方便组织管理；
-2. slab会预分配内存，提高获取对象的效率；
+2. 对于系统频繁申请释放的对象（如task_struct），使用slab可提升性能、减少内存碎片；
+3. slab会预分配内存，提高获取对象的效率；
