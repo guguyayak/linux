@@ -7,7 +7,8 @@
 # mpstat 30 -- 查看CPU使用情况
 # [火焰图](https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html) [tools in git](https://github.com/brendangregg/FlameGraph)
 # htop查看CPU使用率
-
+# 把一块内存挂载到一个目录上
+> mount -t tmpfs -o size=1024m tmpfs /mnt/ram   
 # [tcp_trace.stp](https://sourceware.org/systemtap/examples/network/tcp_trace.stp)
 # 打印列解释
 ```
