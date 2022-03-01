@@ -1,3 +1,14 @@
+# 客户端op时延过滤脚本
+```
+#!/bin/sh
+
+op=("CLI_OPTYPE_READ" "SEGMENT_READ_SUBMIT--wait" "CLI_DATAIO_READ" "CLI_OPTYPE_WRITE" "SEGMENT_WRITE_PREPARE--wait" "CLI_DATAIO_WRITE")
+
+for i in ${op[@]};
+do
+    grep -A 1 "$i[ -]" $1 |grep total |awk '{printf "'$i'              %-10s%-10s\n",$3,$NF}'
+done
+```
 # 字符串替换
 - 1. sed替换的基本语法为:
 > sed 's/原字符串/替换字符串/'   
