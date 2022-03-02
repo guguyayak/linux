@@ -358,3 +358,6 @@ PAGE DIRECTORY: e0ba12067
       PAGE        PHYSICAL      MAPPING       INDEX CNT FLAGS
 ffffd76693ebcc80 4faf32000                0        0  1 6fffff00000000
 ```
+# 打印内存数据
+> 在crash里执行x/1024x  0xffff97212eaf1000   
+> 把后面4K的内存信息dump出来
