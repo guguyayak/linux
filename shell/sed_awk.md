@@ -6,7 +6,7 @@ op=("CLI_OPTYPE_READ" "SEGMENT_READ_SUBMIT--wait" "CLI_DATAIO_READ" "CLI_OPTYPE_
 
 for i in ${op[@]};
 do
-    grep -A 1 "$i[ -]" $1 |grep total |awk '{printf "'$i'              %-10s%-10s\n",$3,$NF}'
+    grep -A 1 "$i[ -]" $1 |grep total |sed "s/^/$i /" | awk '{printf "%-30s%-10s%-10s\n",$1,$4,$NF}'
 done
 ```
 # 字符串替换
