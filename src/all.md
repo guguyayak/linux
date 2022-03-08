@@ -1,5 +1,5 @@
 # 函数打印
-## [printk](https://www.kernel.org/doc/html/v4.19/core-api/printk-formats.html) [格式化站位](https://www.kernel.org/doc/html/latest/translations/zh_CN/core-api/printk-formats.html)
+## [printk](https://www.kernel.org/doc/html/v4.19/core-api/printk-formats.html)   [格式化占位](https://www.kernel.org/doc/html/latest/translations/zh_CN/core-api/printk-formats.html)
 # 内核版本
 > /usr/include/linux/version.h  
 > #define LINUX_VERSION_CODE 263213  
