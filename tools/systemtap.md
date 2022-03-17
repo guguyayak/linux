@@ -409,3 +409,6 @@ probe timer.s(1)
 # 跟踪某个文件下的函数
 > 跟踪一个函数：stap -ve 'probe kernel.function("remove_proc_entry@proc/generic.c") {printf("%s\n", kernel_string($name))}'   
 > 跟踪所有函数：stap -ve 'probe kernel.function("*@proc/generic.c") {printf("%s\n", kernel_string($name))}'   
+# 修改函数返回值
+> stap -vge 'probe module("/home/parastor/tools/client/parastor.ko").function("dataio_read_sort").return {print_backtrace(); $return=-20410011;}'   
+> 改变返回值，需要加 -g 参数   
