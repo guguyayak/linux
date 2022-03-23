@@ -15,7 +15,7 @@ fsd=fsd2,anchor=/mnt/fs002/vdbench/vd2_iops
 fsd=fsd3,anchor=/mnt/fs002/vdbench/vd3_iops
 
 fwd=format,threads=24,xfersize=30K
-#fwd=default,threads=32,xfersize=4K,fileselect=random,fileio=random,openflags=directio
+#fwd=default,threads=32,xfersize=4K,fileselect=random,fileio=random,openflags=o_direct
 fwd=default,threads=32,xfersize=4K,fileselect=random,fileio=random
 fwd=fwd1,fsd=fsd1,host=hd1
 fwd=fwd2,fsd=fsd2,host=hd2
