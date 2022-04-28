@@ -4,6 +4,7 @@
 
 op=("CLI_OPTYPE_READ" "SEGMENT_READ_SUBMIT--wait" "CLI_DATAIO_READ" "CLI_OPTYPE_WRITE" "SEGMENT_WRITE_PREPARE--wait" "CLI_DATAIO_WRITE")
 
+printf "%-30s%-10s%-10s\n" OP count avg
 for i in ${op[@]};
 do
     grep -A 1 "$i[ -]" $1 |grep total |sed "s/^/$i /" | awk '{printf "%-30s%-10s%-10s\n",$1,$4,$NF}'
