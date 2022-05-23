@@ -37,5 +37,19 @@ all:
 clean:
         rm -f *.ko *.o *.mod.o *.mod.c .*.cmd *.symvers modul* *.unsigned
 ```
+# modprobe 加载模块传参
+```c
+/* upcall via usermodehelper */
+static char cltrack_prog[PATH_MAX] = "/sbin/nfsdcltrack";
+module_param_string(cltrack_prog, cltrack_prog, sizeof(cltrack_prog),
+			S_IRUGO|S_IWUSR);
+MODULE_PARM_DESC(cltrack_prog, "Path to the nfsdcltrack upcall program");
+
+static bool cltrack_legacy_disable;
+module_param(cltrack_legacy_disable, bool, S_IRUGO|S_IWUSR);
+MODULE_PARM_DESC(cltrack_legacy_disable,
+		"Disable legacy recoverydir conversion. Default: false");
+```
+> nfsd 模块加载参数查看路径：/sys/module/nfsd/parameters/   
 # modprobe 加载模块传参配置文件
 > /etc/modprobe.d/lockd.conf   
