@@ -4,9 +4,13 @@
 > /usr/include/linux/version.h  
 > #define LINUX_VERSION_CODE 263213  
 > #define KERNEL_VERSION(a,b,c) (((a)<<16)+((b)<<8)+(c))  
-# 原子变量读取
+# 原子变量
+## 原子变量读取
 > kref_read(&freeme->ref)  
-
+## 原子变量定义
+```c
+typedef struct { volatile int counter; } atomic_t;
+```
 # get_fs set_fs
 > get_ds获得kernel的内存访问地址范围（IA32是4GB）  
 > set_fs是设置当前的地址访问限制值  
