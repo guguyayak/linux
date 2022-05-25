@@ -119,3 +119,15 @@ static inline const struct nfs_rpc_ops *NFS_PROTO(const struct inode *inode)
 	return NFS_SERVER(inode)->nfs_client->rpc_ops;
 }
 ```
+# samething
+```c
+const struct dentry_operations nfs_dentry_operations = {
+	.d_revalidate	= nfs_lookup_revalidate,
+	.d_weak_revalidate	= nfs_weak_revalidate,
+	.d_delete	= nfs_dentry_delete,
+	.d_iput		= nfs_dentry_iput,
+	.d_automount	= nfs_d_automount,
+	.d_release	= nfs_d_release,
+};
+EXPORT_SYMBOL_GPL(nfs_dentry_operations);
+```
