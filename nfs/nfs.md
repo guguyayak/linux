@@ -8,7 +8,7 @@ struct notifier_block nfsd_inetaddr_notifier = {
 };
 ```
 # mount.nfs参数
-```sass
+```
 [root@localhost ~]# mount -t nfs 192.168.182.204:/mnt/lmm /mnt/lmm/ -o
 ac             bg             fsc            mountport=     noauto         nordirplus     rdirplus       rw             user
 acdirmax=      context=       fscontext=     mountproto=    nocto          norelatime     rdma           sec=           users
@@ -20,6 +20,9 @@ actimeo=       diratime       lookupcache=   nfsvers=       nofsc          nouse
 async          dirsync        loop           noac           nointr         owner          ro             tcp
 atime          exec           mand           noacl          noiversion     port=          rootcontext=   timeo=
 auto           fg             mounthost=     noatime        nomand         proto=         rsize=         udp
+
+acregmin=1,acregmax=1 // 文件的属性有效时间，调小nfs客户端可能会频繁发getattr请求
+lookupcache="none" // 不缓存 lookup 结果，nfs客户端访问文件每次都会发起 lookup 请求
 ```
 # sunrpc
 ## svc_export_cache
