@@ -8,3 +8,4 @@
 (gdb) p [变量指针]->[变量成员]
 (gdb) p *[变量指针]->[变量成员指针]
 ```
+# [gdb手册](https://sourceware.org/gdb/onlinedocs/gdb/Threads.html)
