@@ -9,3 +9,4 @@
 (gdb) p *[变量指针]->[变量成员指针]
 ```
 # [gdb手册](https://sourceware.org/gdb/onlinedocs/gdb/Threads.html)
+# [gdb使用技巧](https://wizardforcel.gitbooks.io/100-gdb-tips/content/print-threads.html)
