@@ -266,19 +266,19 @@ probe $3.return
 
 probe end
 {
-  printf("intervals min:%dus avg:%dus max:%dus count:%d variance:%d\n",
+  printf("intervals min:%dus avg:%dus max:%dus count:%d variance:%d sum:%d\n",
          @min(intervals), @avg(intervals), @max(intervals),
-         @count(intervals), @variance(intervals, 3))
+         @count(intervals), @variance(intervals, 3), @sum(intervals))
   print(@hist_log(intervals));
 
-  printf("intervals2 min:%dus avg:%dus max:%dus count:%d variance:%d\n",
+  printf("intervals2 min:%dus avg:%dus max:%dus count:%d variance:%d sum:%d\n",
           @min(intervals2), @avg(intervals2), @max(intervals2),
-          @count(intervals2), @variance(intervals2, 3))
+          @count(intervals2), @variance(intervals2, 3), @sum(intervals2))
   print(@hist_log(intervals2));
 
-  printf("intervals3 min:%dus avg:%dus max:%dus count:%d variance:%d\n",
+  printf("intervals3 min:%dus avg:%dus max:%dus count:%d variance:%d sum:%d\n",
           @min(intervals3), @avg(intervals3), @max(intervals3),
-          @count(intervals3), @variance(intervals3, 3))
+          @count(intervals3), @variance(intervals3, 3), @sum(intervals3))
   print(@hist_log(intervals3));
 }
 ```
