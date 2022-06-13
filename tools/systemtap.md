@@ -52,6 +52,33 @@ probe kernel.function("sk_stream_wait_memory").return
 		gettimeofday_us(), execname(), pid())
 }
 ```
+## /usr/share/systemtap/examples/general/para-callgraph.stp
+```
+#!/usr/bin/stap
+
+function trace(entry_p, extra) {
+  %( $# > 1 %? if (tid() in trace) %)
+  printf("%s%s%s %s\n",
+         thread_indent (entry_p),
+         (entry_p>0?"->":"<-"),
+         ppfunc (),
+         extra)
+}
+
+
+%( $# > 1 %?
+global trace
+probe $2.call {
+  trace[tid()] = 1
+}
+probe $2.return {
+  delete trace[tid()]
+}
+%)
+
+probe $1.call   { trace(1, $$parms) }
+probe $1.return { trace(-1, $$return) }
+```
 # 脚本执行时长设定
 > probe timer.s(60) { exit(); }   
 > -T TIME    terminate the script after TIME seconds   
