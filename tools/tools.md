@@ -12,3 +12,5 @@ nprsh -on 173.7.0.1-48 "[指令]"
 nprsh -f nodelist "pkill -9 iozone"
 nodelist 文件保存节点ip
 ```
+# lsof（list open files）
+> -p<进程号> 列出指定进程号所打开的文件   
