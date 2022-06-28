@@ -38,3 +38,5 @@ dac.ko  dlm.ko  hrdma.ko  kfnccli.ko  knal.ko  kutil.ko  parastor.ko
 > perf script | ./stackcollapse-perf.pl > out.perf-folded && ./flamegraph.pl out.perf-folded > perf.svg   
 > 第一行是抓数据。第二行是简单解析数据（可以不用）。第三行是把第一行抓的数据生成一个能在浏览器中看的火焰图。   
 > https://github.com/brendangregg/FlameGraph   第三行用的脚本可以在这里下载   
+> 对指定线程生成火焰图：   
+> perf script -v --tid 2283472,2283471 | ./stackcollapse-perf.pl | ./flamegraph.pl > perf.svg   
