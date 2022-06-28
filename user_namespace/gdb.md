@@ -12,3 +12,6 @@
 # [gdb使用技巧](https://wizardforcel.gitbooks.io/100-gdb-tips/content/print-threads.html)
 # 强制生成core文件
 > gcore [pid]
+# 修改变量
+> gdb attach [pid]   
+> p [全局变量名]=[值]   
