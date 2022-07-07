@@ -24,6 +24,7 @@ auto           fg             mounthost=     noatime        nomand         proto
 acregmin=1,acregmax=1 // 文件的属性有效时间，调小nfs客户端可能会频繁发getattr请求
 lookupcache="none" // 不缓存 lookup 结果，nfs客户端访问文件每次都会发起 lookup 请求
 ```
+# [exports参数解释](https://blog.csdn.net/qq_36357820/article/details/78488077)
 # sunrpc
 ## svc_export_cache
 ```c
