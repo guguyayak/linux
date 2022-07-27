@@ -9,3 +9,5 @@ wget https://git.centos.org/sources/kernel/c7/53f546c77c118d7cb6055fb430d5643b85
 tar xf 53f546c77c118d7cb6055fb430d5643b85cb0088
 cd linux-3.10.0-1127.19.1.el7
 ```
+# [rpm包搜索下载](https://www.rpmfind.net/linux/rpm2html/)
+> 内核源码包直接搜索kernel，再找对应版本，点进去可下载源码   
