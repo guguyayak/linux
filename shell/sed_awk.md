@@ -2,12 +2,12 @@
 ```
 #!/bin/sh
 
-op=("CLI_OPTYPE_READ" "SEGMENT_READ_SUBMIT--wait" "CLI_DATAIO_READ" "CLI_OPTYPE_WRITE" "SEGMENT_WRITE_PREPARE--wait" "CLI_DATAIO_WRITE")
+op=("CLI_OPTYPE_READ" "SEGMENT_READ_SUBMIT--wait" "CLI_DATAIO_READ" "CLI_OPTYPE_WRITE" "CLI_DATAIO_WRITE" "SEGMENT_WRITE_PREPARE--wait" "SEGMENT_WRITE_GET_LAYOUT--wait" "SEGMENT_WRITE_PREPARE_COMPLETE--wait")
 
-printf "%-30s%-10s%-10s\n" OP count avg
+printf "%-50s%-10s%-10s\n" OP count avg
 for i in ${op[@]};
 do
-    grep -A 1 "$i[ -]" $1 |grep total |sed "s/^/$i /" | awk '{printf "%-30s%-10s%-10s\n",$1,$4,$NF}'
+    grep -A 1 "$i[ -]" $1 |grep total |sed "s/^/$i /" | awk '{printf "%-50s%-10s%-10s\n",$1,$4,$NF}'
 done
 ```
 # 字符串替换
