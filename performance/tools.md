@@ -5,6 +5,7 @@
 # dstat -- 查看CPU、磁盘、网络等使用情况
 > 查看网卡速率：dstat -nf   
 # mpstat 30 -- 查看CPU使用情况
+# [sar](https://www.thomas-krenn.com/en/wiki/Collect_and_report_Linux_System_Activity_Information_with_sar)
 # [火焰图](https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html) [tools in git](https://github.com/brendangregg/FlameGraph)
 # htop查看CPU使用率
 # 把一块内存挂载到一个目录上
