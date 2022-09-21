@@ -72,3 +72,21 @@ ffffffff89c3ff70 (T) tcp_recvmsg /usr/src/debug/kernel-3.10.0-862.el7/linux-3.10
 crash> sym 0xffffffff89c42450
 ffffffff89c42450 (T) tcp_sendpage /usr/src/debug/kernel-3.10.0-862.el7/linux-3.10.0-862.el7.x86_64/net/ipv4/tcp.c: 999
 ```
+# sunrpc重现死循环bug
+> centos7.6版本删除了xs_sock_mark_closed，引入此问题
+```c
+static void xs_tcp_state_change(struct sock *sk)
+{
+...
+	case TCP_CLOSE:
+		if (test_and_clear_bit(XPRT_SOCK_CONNECTING,
+					&transport->sock_state))
+			xprt_clear_connecting(xprt);
+		if (sk->sk_err)
+			xprt_wake_pending_tasks(xprt, -sk->sk_err);
+		xs_sock_mark_closed(xprt);
+	}
+ out:
+	read_unlock_bh(&sk->sk_callback_lock);
+}
+```
