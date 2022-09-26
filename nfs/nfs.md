@@ -42,7 +42,7 @@ static struct cache_detail svc_export_cache_template = {
 	.alloc		= svc_export_alloc,
 };
 ```
-## rpc_cmp_addr
+## rpc ip addr
 ```c
 static inline bool rpc_cmp_addr(const struct sockaddr *sap1,
 				const struct sockaddr *sap2)
@@ -56,6 +56,14 @@ static inline bool rpc_cmp_addr(const struct sockaddr *sap1,
 		}
 	}
 	return false;
+}
+
+static int rpc_ntop4(const struct sockaddr *sap,
+                     char *buf, const size_t buflen)
+{
+        const struct sockaddr_in *sin = (struct sockaddr_in *)sap;
+
+        return snprintf(buf, buflen, "%pI4", &sin->sin_addr);
 }
 ```
 ## 线程睡眠位置
