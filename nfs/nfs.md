@@ -143,3 +143,16 @@ const struct dentry_operations nfs_dentry_operations = {
 };
 EXPORT_SYMBOL_GPL(nfs_dentry_operations);
 ```
+# nfs uid gid设置
+> struct svc_rqst.rq_cred.cr_uid/cr_gid 保存nfs客户端请求的用户信息   
+> 通过函数 nfsd_setuser 把 uid gid信息封装到 current->cred   
+> 底层文件系统通过宏 current_fsuid() 获取 uid信息   
+```c
+int nfsd_setuser(struct svc_rqst *rqstp, struct svc_export *exp)
+{
+	struct cred *new;
+	new->fsuid = rqstp->rq_cred.cr_uid;
+	new->fsgid = rqstp->rq_cred.cr_gid;
+	put_cred(override_creds(new));
+}
+```
