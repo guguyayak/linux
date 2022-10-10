@@ -78,6 +78,10 @@ probe $2.return {
 
 probe $1.call   { trace(1, $$parms) }
 probe $1.return { trace(-1, $$return) }
+
+[使用示例](https://sourceware.org/systemtap/examples/general/para-callgraph.txt)：
+$ stap para-callgraph.stp 'process("/bin/ls").function("*")' \
+'process("/bin/ls").function("main")' -c "/bin/ls > /dev/null"
 ```
 # 脚本执行时长设定
 > probe timer.s(60) { exit(); }   
