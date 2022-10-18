@@ -63,3 +63,4 @@
       mnt_owner = 0
     }
 ```
+# [Tainted](https://docs.kernel.org/translations/zh_TW/admin-guide/tainted-kernels.html)
