@@ -11,3 +11,4 @@ cd linux-3.10.0-1127.19.1.el7
 ```
 # [rpm包搜索下载](https://www.rpmfind.net/linux/rpm2html/)
 > 内核源码包直接搜索kernel，再找对应版本，点进去可下载源码   
+#[通用版本下载地址](https://vault.centos.org/)
