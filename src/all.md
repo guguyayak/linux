@@ -5,6 +5,7 @@
 > #define LINUX_VERSION_CODE 263213  
 > #define KERNEL_VERSION(a,b,c) (((a)<<16)+((b)<<8)+(c))  
 # [获取内核函数的方法](https://github.com/gatieme/LDD-LinuxDeviceDrivers/tree/master/study/debug/filesystem/procfs/func_addr)
+> /proc/kallsyms 记录内核函数地址信息   
 # [深入分析Linux内核源码](https://book.aikaiyuan.com/kernel/)
 # 原子变量
 ## 原子变量读取
