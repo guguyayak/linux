@@ -97,4 +97,7 @@ static inline unsigned long node_page_state(int node,
 				 enum zone_stat_item item)
 #if LINX_VERSION_CODE >= kernel_verdion(4,4,0)
 #define node_free_pages(nid)	g_kallsyms.node_page_state(nid, NR_FREE_PAGES)
+#else
+#define node_free_pages(nid)	node_page_state(nid, NR_FREE_PAGES)
+#endif
 ```
