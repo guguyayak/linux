@@ -64,3 +64,37 @@ static void nfsd4_free_file_rcu(struct rcu_head *rcu)
 4. 内核对象中相当一部分成员需要某些特殊的初始化（例如队列头部）而并非简单地清成全 0。如果能充分重用已被释放的对象使得下次分配时无需初始化，那么可以提高内核的运行效率。
 > 需要深入学习的点
 1. slab对象对齐导致只会映射到几个特定的hash，加剧cache miss。为了使slab对象均匀映射到所有的hash空间中，加入了着色偏移的方法。着色即为添加偏移。
+# numa相关接口函数
+```c
+/*
+ * Bitmasks that are kept for all the nodes.
+ */
+enum node_states {
+	N_POSSIBLE,		/* The node could become online at some point */
+	N_ONLINE,		/* The node is online */
+	N_NORMAL_MEMORY,	/* The node has regular memory */
+#ifdef CONFIG_HIGHMEM
+	N_HIGH_MEMORY,		/* The node has regular or high memory */
+#else
+	N_HIGH_MEMORY = N_NORMAL_MEMORY,
+#endif
+#ifdef CONFIG_MOVABLE_NODE
+	N_MEMORY,		/* The node has memory(regular, high, movable) */
+#else
+	N_MEMORY = N_HIGH_MEMORY,
+#endif
+	N_CPU,		/* The node has one or more cpus */
+	NR_NODE_STATES
+};
+
+#define num_memory_nodes()	num_node_state(N_HIGH_MEMORY)
+/*
+ * Determine the per node value of a stat item. This function
+ * is called frequently in a NUMA machine, so try to be as
+ * frugal as possible.
+ */
+static inline unsigned long node_page_state(int node,
+				 enum zone_stat_item item)
+#if LINX_VERSION_CODE >= kernel_verdion(4,4,0)
+#define node_free_pages(nid)	g_kallsyms.node_page_state(nid, NR_FREE_PAGES)
+```
