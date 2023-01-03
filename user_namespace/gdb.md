@@ -7,6 +7,18 @@
 (gdb) f 1
 (gdb) p [变量指针]->[变量成员]
 (gdb) p *[变量指针]->[变量成员指针]
+打印结构体大小
+(gdb) p sizeof(struct struct_name)
+由地址查看源码行信息：
+(gdb) l* [addr]
+设置gdb打印窗口无限大（默认是打印一页按enter键后继续打印下一页）
+(gdb)set height 0
+gdb界面打印内存都会保存到gdb.log文件中
+(gdb)set logging on
+打印addr对应地址内存，a是打印格式
+(gdb) x/[len]a [addr]
+以二进制打印addr1~addr2的内存
+(gdb) dump binary memory result.bin [addr1] [addr2]
 ```
 # [gdb手册](https://sourceware.org/gdb/onlinedocs/gdb/Threads.html)
 # [gdb使用技巧](https://wizardforcel.gitbooks.io/100-gdb-tips/content/print-threads.html)
