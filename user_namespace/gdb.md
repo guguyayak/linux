@@ -11,6 +11,9 @@
 (gdb) p sizeof(struct struct_name)
 由地址查看源码行信息：
 (gdb) l* [addr]
+也可以通过addr2line指令(非gdb环境，shell指令)：
+addr2line -e [程序路径] [addr] -f -p
+输出内容： [函数名] at 源码文件路径:line
 设置gdb打印窗口无限大（默认是打印一页按enter键后继续打印下一页）
 (gdb)set height 0
 gdb界面打印内存都会保存到gdb.log文件中
