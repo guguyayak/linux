@@ -30,7 +30,7 @@ gdb界面打印内存都会保存到gdb.log文件中
 # 修改变量
 > gdb attach [pid]   
 > p [全局变量名]=[值]   
-# 分析进程堆内存分布gdb脚本，可分析coredump文件
+# [分析进程堆内存分布gdb脚本，可分析coredump文件](https://gist.github.com/darnaut/1d39b74a2a3311fb795e)
 ```shell
 define my_malloc_stats
   set $in_use = mp_.mmapped_mem
