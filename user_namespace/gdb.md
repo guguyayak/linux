@@ -86,3 +86,32 @@ define my_malloc_stats
   printf "Total:\nsystem bytes     = %10lu\nin use bytes     = %10lu\n", $system, $in_use
 end
 ```
+# 用户态core遍历malloc_chunk
+```sh
+[root@c75n81p64 lmm]# cat pChunk.gdb
+set $total=0
+set $alloc=0
+set $free=0
+set $seq=0
+set $chk=(struct malloc_chunk *)(mp_->sbrk_base)
+while ($chk != 0)
+    set $sz=$chk->size & (~(0x7))
+    if ($chk == main_arena->top)
+        set $free=$free+$sz
+        set $seq=$seq+$sz
+        printf "%p, %ld, %d, %ld, %ld, %ld, %ld\n", $chk, $sz, 0, $alloc, $seq, $free, $total
+        loop_break
+    end
+    set $nxt_chk=(struct malloc_chunk *)((char *)$chk + $sz)
+    set $used=$nxt_chk->size & 0x1
+    if ($used)
+        set $alloc=$alloc+$sz
+        set $seq=0
+    else
+        set $free=$free+$sz
+        set $seq=$seq+$sz
+    end
+    printf "%p, %ld, %d, %ld, %ld, %ld, %ld\n", $chk, $sz, $used, $alloc, $seq, $free, $total
+    set $chk=$nxt_chk
+end
+```
