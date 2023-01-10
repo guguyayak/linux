@@ -20,6 +20,8 @@ gdb界面打印内存都会保存到gdb.log文件中
 (gdb)set logging on
 打印addr对应地址内存，a是打印格式
 (gdb) x/[len]a [addr]
+(gdb) x/[N]c [addr]  打印 N 个字符
+(gdb) x/1s [addr]  打印字符串
 以二进制打印addr1~addr2的内存
 (gdb) dump binary memory result.bin [addr1] [addr2]
 ```
