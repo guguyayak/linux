@@ -28,7 +28,8 @@ gdb界面打印内存都会保存到gdb.log文件中
 # [gdb手册](https://sourceware.org/gdb/onlinedocs/gdb/Threads.html)
 # [gdb使用技巧](https://wizardforcel.gitbooks.io/100-gdb-tips/content/print-threads.html)
 # 强制生成core文件
-> gcore [pid]
+> gcore [pid]   
+> 该指令会执行 gdb attach [pid]，生成core的过程中会阻塞进程
 # 修改变量
 > gdb attach [pid]   
 > p [全局变量名]=[值]   
