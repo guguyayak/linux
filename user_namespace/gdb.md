@@ -25,6 +25,11 @@ gdb界面打印内存都会保存到gdb.log文件中
 以二进制打印addr1~addr2的内存
 (gdb) dump binary memory result.bin [addr1] [addr2]
 ```
+# gdb指令：[info locals](https://visualgdb.com/gdbreference/commands/info_locals)
+```
+The info locals command displays the local variable values in the current frame. You can select frames using the frame, up and down commands.
+Note that the info locals command does not display the information about the function arguments. Use the info args command to list function arguments.
+```
 # [gdb手册](https://sourceware.org/gdb/onlinedocs/gdb/Threads.html)
 # [gdb使用技巧](https://wizardforcel.gitbooks.io/100-gdb-tips/content/print-threads.html)
 # 强制生成core文件
