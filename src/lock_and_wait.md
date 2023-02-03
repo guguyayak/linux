@@ -18,3 +18,11 @@ struct cache_detail {
 	...
 	write_unlock(&detail->hash_lock);
   ```
+# sleep interruptible and clearsig
+```c
+static inline int msleep_interruptible_and_clearsig(unsigned long long wait_ms)
+{
+	int rc = 0;
+	
+}
+```
