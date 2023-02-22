@@ -448,3 +448,29 @@ probe timer.s(1)
 # 修改函数返回值
 > stap -vge 'probe module("/home/parastor/tools/client/parastor.ko").function("dataio_read_sort").return {print_backtrace(); $return=-20410011;}'   
 > 改变返回值，需要加 -g 参数   
+# 跟踪nfsd读写时延
+```sh
+probebegin
+{
+        time_s = gettimeofday_s();
+        datetime_str = tz_ctime(time_s);
+        print(datetime_str."\n");
+}
+
+probemodule("nfsd").function("nfsd_read").return
+{
+        printf("read ino=%ld, pages=%ld,latency=%ldms\n", @cast(@entry($fhp), "structsvc_fh")->fh_dentry->d_inode->i_ino, @entry($vlen),gettimeofday_ms()-@entry(gettimeofday_ms()));
+}
+
+probemodule("nfsd").function("nfsd_write").return
+{
+        printf("write ino=%ld, pages=%ld,latency=%ldms\n", @cast(@entry($fhp), "structsvc_fh")->fh_dentry->d_inode->i_ino, @entry($vlen),gettimeofday_ms()-@entry(gettimeofday_ms()));
+}
+
+probetimer.s(1)
+{
+        time_s = gettimeofday_s();
+        datetime_str = tz_ctime(time_s);
+        print(datetime_str."\n");
+}
+```
