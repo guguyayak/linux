@@ -1,5 +1,10 @@
 # 函数打印
 ## [printk](https://www.kernel.org/doc/html/v4.19/core-api/printk-formats.html)   [格式化占位](https://www.kernel.org/doc/html/latest/translations/zh_CN/core-api/printk-formats.html)
+```c
+	dprintk("NFSD: nfsd4_open filename %.*s op_openowner %p\n",
+		(int)open->op_fname.len, open->op_fname.data,
+		open->op_openowner);
+```
 # 内核版本
 > /usr/include/linux/version.h  
 > #define LINUX_VERSION_CODE 263213  
