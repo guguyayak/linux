@@ -361,3 +361,4 @@ ffffd76693ebcc80 4faf32000                0        0  1 6fffff00000000
 # 打印内存数据
 > 在crash里执行x/1024x  0xffff97212eaf1000   
 > 把后面4K的内存信息dump出来
+# [oops分析教程](https://www.opensourceforu.com/2011/01/understanding-a-kernel-oops/)
