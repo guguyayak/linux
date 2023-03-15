@@ -123,3 +123,14 @@ while ($chk != 0)
     set $chk=$nxt_chk
 end
 ```
+# 查看函数地址或者由地址查找函数名
+```
+debug时候，经常需要查找函数地址，在gdb中可以用 "info address function_name"
+
+(gdb) info address test
+Symbol "test" is a function at address 0x9e250
+
+有时候，也会有知道函数地址，反找函数名的需求，在gdb中可以用 "info symbol func_addr"
+(gdb) info symbol 0x9e250
+test in section .text
+```
