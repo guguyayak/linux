@@ -362,3 +362,43 @@ ffffd76693ebcc80 4faf32000                0        0  1 6fffff00000000
 > 在crash里执行x/1024x  0xffff97212eaf1000   
 > 把后面4K的内存信息dump出来
 # [oops分析教程](https://www.opensourceforu.com/2011/01/understanding-a-kernel-oops/)
+# [Another way of reading page data](https://linuxcrash.readthedocs.io/en/latest/crash.html)
+## 
+```
+Directly read the page
+crash> kmem -p 0xffffea000d973f70
+PAGE        PHYSICAL      MAPPING       INDEX CNT FLAGS
+ffffea000d973f70 3e2122000 ffff88042731f1f8        0  1 400000000800d8
+You need to find the virtual address of the page
+crash> ptov 3e2122000
+VIRTUAL           PHYSICAL
+ffff8803e2122000  3e2122000
+Read the data at the virtual address
+crash> rd -8 ffff8803e2122000 100
+ffff8803e2122000:  23 69 6e 63 6c 75 64 65 20 3c 66 63 6e 74 6c 2e   #include <fcntl.
+ffff8803e2122010:  68 3e 0a 23 69 6e 63 6c 75 64 65 20 3c 73 74 64   h>.#include <std
+ffff8803e2122020:  69 6f 2e 68 3e 0a 23 69 6e 63 6c 75 64 65 20 3c   io.h>.#include <
+ffff8803e2122030:  75 6e 69 73 74 64 2e 68 3e 0a 23 69 6e 63 6c 75   unistd.h>.#inclu
+ffff8803e2122040:  64 65 20 3c 73 79 73 2f 74 79 70 65 73 2e 68 3e   de <sys/types.h>
+ffff8803e2122050:  0a 23 69 6e 63 6c 75 64 65 20 3c 73 79 73 2f 73   .#include <sys/s
+ffff8803e2122060:  74 61 74 2e                                       tat.
+crash> rd -8 ffff8803e2122000 1000
+ffff8803e2122000:  23 69 6e 63 6c 75 64 65 20 3c 66 63 6e 74 6c 2e   #include <fcntl.
+ffff8803e2122010:  68 3e 0a 23 69 6e 63 6c 75 64 65 20 3c 73 74 64   h>.#include <std
+ffff8803e2122020:  69 6f 2e 68 3e 0a 23 69 6e 63 6c 75 64 65 20 3c   io.h>.#include <
+ffff8803e2122030:  75 6e 69 73 74 64 2e 68 3e 0a 23 69 6e 63 6c 75   unistd.h>.#inclu
+ffff8803e2122040:  64 65 20 3c 73 79 73 2f 74 79 70 65 73 2e 68 3e   de <sys/types.h>
+ffff8803e2122050:  0a 23 69 6e 63 6c 75 64 65 20 3c 73 79 73 2f 73   .#include <sys/s
+ffff8803e2122060:  74 61 74 2e 68 3e 0a 0a 69 6e 74 20 6d 61 69 6e   tat.h>..int main
+ffff8803e2122070:  20 28 29 20 7b 0a 09 69 6e 74 20 66 64 31 2c 20    () {..int fd1,
+ffff8803e2122080:  66 64 32 2c 20 66 64 33 2c 20 66 64 34 2c 20 66   fd2, fd3, fd4, f
+ffff8803e2122090:  64 35 3b 0a 09 0a 09 66 64 31 3d 6f 70 65 6e 28   d5;....fd1=open(
+ffff8803e21220a0:  22 31 22 2c 20 4f 5f 43 52 45 41 54 29 3b 0a 09   "1", O_CREAT);..
+ffff8803e21220b0:  66 64 32 3d 6f 70 65 6e 28 22 32 22 2c 20 4f 5f   fd2=open("2", O_
+ffff8803e21220c0:  43 52 45 41 54 29 3b 0a 09 66 64 33 3d 6f 70 65   CREAT);..fd3=ope
+ffff8803e21220d0:  6e 28 22 33 22 2c 20 4f 5f 43 52 45 41 54 29 3b   n("3", O_CREAT);
+ffff8803e21220e0:  0a 09 66 64 34 3d 6f 70 65 6e 28 22 34 22 2c 20   ..fd4=open("4",
+ffff8803e21220f0:  4f 5f 43 52 45 41 54 29 3b 0a 09 66 64 35 3d 6f   O_CREAT);..fd5=o
+ffff8803e2122100:  70 65 6e 28 22 35 22 2c 20 4f 5f 43 52 45 41 54   pen("5", O_CREAT
+ffff8803e2122110:  29 3b 0a 09 77 68 69 6c 65 20 28 31 29 20 7b 0a   );..while (1) {.
+```
