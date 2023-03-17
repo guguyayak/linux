@@ -13,6 +13,7 @@ struct hlist_node {
 };
 ```
 # hash list
+> 如果需要使用全局链表，需要对链表加锁进行增删查改，最好做个hash list，通过hash值分散到不同的链表上，这样可以减少锁竞争，提升并发。   
 ```c
 #define FILE_HASH_BITS		7
 #define FILE_NRHASH		(1<<FILE_HASH_BITS)
