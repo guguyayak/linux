@@ -401,4 +401,16 @@ ffff8803e21220e0:  0a 09 66 64 34 3d 6f 70 65 6e 28 22 34 22 2c 20   ..fd4=open(
 ffff8803e21220f0:  4f 5f 43 52 45 41 54 29 3b 0a 09 66 64 35 3d 6f   O_CREAT);..fd5=o
 ffff8803e2122100:  70 65 6e 28 22 35 22 2c 20 4f 5f 43 52 45 41 54   pen("5", O_CREAT
 ffff8803e2122110:  29 3b 0a 09 77 68 69 6c 65 20 28 31 29 20 7b 0a   );..while (1) {.
+
+//自己测试
+日志：page fffffd27a024eec0 page_address (pages) = 0x ffff92b0493bb000 flags = 2fffff00000000
+
+crash> kmem -p 0x fffffd27a024eec0
+PAGE
+PHYSICAL           MAPPING         INDEX CNT FLAGS
+fffffd27a024eec0 8093bb000          1     2  fffff000000000
+
+crash> ptov 8093bb000
+VIRTUAL                  PHYSICAL
+ffff92b0493bb000         8093bb000
 ```
