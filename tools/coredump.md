@@ -406,9 +406,8 @@ ffff8803e2122110:  29 3b 0a 09 77 68 69 6c 65 20 28 31 29 20 7b 0a   );..while (
 日志：page fffffd27a024eec0 page_address (pages) = 0x ffff92b0493bb000 flags = 2fffff00000000
 
 crash> kmem -p 0x fffffd27a024eec0
-PAGE
-PHYSICAL           MAPPING         INDEX CNT FLAGS
-fffffd27a024eec0 8093bb000          1     2  fffff000000000
+PAGE             PHYSICAL           MAPPING         INDEX CNT FLAGS
+fffffd27a024eec0 8093bb000          0                 0    1  2fffff000000000
 
 crash> ptov 8093bb000
 VIRTUAL                  PHYSICAL
