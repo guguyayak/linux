@@ -1,0 +1,28 @@
+valgrind是一个用于构建动态分析工具的框架，目前官方提供了六种自带的工具，包含内存错误检查工具、线程错误检查工具，缓存分支预测工具等；
+# valgrind --tool=memcheck
+1.命令参数说明
+valgrind --tool=memcheck --leak-check=full --smc-check=all --log-file=result.log --show-leak-kinds=all --show-below-amin=yes --num-callers=50 ./test
+--tool=memcheck: 使用valgrind提供的内存检测工具
+--leak-check=full: 内存泄漏检查结果显示的详尽程度
+--smc-check=all: 自修改代码检查开关，使得UT内桩函数生效
+--log-file=result.log: 检测结果的输出文件
+--show-leak-kinds=all: 显示所有类型的泄露(definite或者prossible)
+--num-callers=50: 显示的调用栈层数
+补充:
+1、log-fle参数是输出文件路径，可以填绝对路径，然后输出文件名加,%p参数，每个进程都会产生一个输出文件，%p会被对应进程号替代-log-file=/var/log/valgrind/valgrind result.%p
+2、kil-11杀死valgrind跟踪的后台进程可获取内存统计信息，kl -9杀死进程不行。不过k -11 进程可能会出core，出ore的话感觉进程也不是正常退出的，但是还没有更好的办法让后台进程主动产生内存信息。
+# valgrind --tool=massif
+valgrind -V --tool=massif --massif-out-file=/var/crash/lmm/massif.out.%p ./test说明
+1、massif工具会定期采样记录堆内存信息
+2、输出文件通过--massif-out-file配置
+3、使用ms_print工具输出解析后结果
+ms print ./massif.out.16450 > massif.16450.result
+ms_print输出结果
+1、输出内容大致如下;
+2、显示了每次采样点堆内存的使用情况以及申请内存较多的一些流程的函数调用栈信息；
+valgrind工具启动Samba服务说明
+1、编辑Samba的启动文件/home/parastor/cnas/smb/etc/ctdb/events.d/50.samba 和 /home/parastor/cnas/bin/smb，在Samba程序启动加valgrind项
+如: 在50.samba文件中Samba服务启动项$SMB SBIN PATH SNMBDOPTIONS  die"Failed to start smbd"前加valgrind项
+valgrind --tool=memcheck --trace-chdren=yes -leak-check=full --smc-check=all --log-file=/var/log/valgrind/valgrind_result.%p --show-leak-kinds=all --show-below-main=yes --num-callers=50
+$SMB_SBIN_PATH $NMBDOPTIONS || die "Failed to start smbd"
+2、杀死原有Samba进程，重新启动Samba
