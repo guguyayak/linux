@@ -1,0 +1,2 @@
+glibc提供的malloc()的调试工具
+参考文档：https://www.cnblogs.com/arnoldlu/p/10827884.html
