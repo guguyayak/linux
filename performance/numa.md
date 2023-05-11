@@ -5,6 +5,19 @@
 > 查看有物理内存的node：cat /sys/devices/system/node/has_normal_memory    
 # 查看网卡物理上连接哪个 numa node
 >  cat /sys/class/net/enp4s0f1/device/numa_node
+# numa tools
+```
+numastat —— per-NUMA-node memory statistics
+查看指定pid占用内存在各个numa上的分布情况：
+numastat -p [pid]
+查看numa信息，如CPU核，内存大小，各个node间距离：
+numactl -H
+numa内存带宽测试，即把内存数据读到CPU的速度：
+time numactl -N 0 -m 0 ./a.out
+-N 运行程序使用CPU核所在node编号
+-m 运行程序使用内存所在node编号
+a.out c语言写的简单的memcpy函数执行，就是不停的copy一块内存；
+```
 # 关于numa的一个调优实例
 ```
 问题现象：
