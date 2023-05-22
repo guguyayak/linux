@@ -474,3 +474,7 @@ probetimer.s(1)
         print(datetime_str."\n");
 }
 ```
+# 列出函数入参
+```
+stap -L 'module("nfsd").function("nfsd_write")'
+```
