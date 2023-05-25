@@ -41,3 +41,12 @@ dac.ko  dlm.ko  hrdma.ko  kfnccli.ko  knal.ko  kutil.ko  parastor.ko
 > https://github.com/brendangregg/FlameGraph   第三行用的脚本可以在这里下载   
 > 对指定线程生成火焰图：   
 > perf script -v --tid 2283472,2283471 | ./stackcollapse-perf.pl | ./flamegraph.pl > perf.svg   
+# perf trace top
+```
+记录op调用
+perf trace -p [pid] -o perf.log
+函数占用CPU情况树形结构
+perf top -p [pid] -g > perftop.log
+
+-t [tid] 跟踪线程
+```
