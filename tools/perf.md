@@ -18,8 +18,9 @@ clear_iostat.sh  iozone_nfs  iozone.r  module.sh  perf.sh  read.sh  rw.sh
 #!/bin/bash
 
 src=/cliparastor/tools/client
-tag=/lib/modules/3.10.0-862.el7.x86_64/extra/
+tag=/lib/modules/`uname -r`/extra/
 
+mkdir -p $tag
 rm -rf $tag/$.ko
 
 for i in dac.ko dlm.ko hrdma.ko kfnccli.ko knal.ko kutil.ko parastor.ko
