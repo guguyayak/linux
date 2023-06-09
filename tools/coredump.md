@@ -413,3 +413,14 @@ crash> ptov 8093bb000
 VIRTUAL                  PHYSICAL
 ffff92b0493bb000         8093bb000
 ```
+# 把文件导入crash指令界面
+```
+crash> < h_gdb > hash_list
+crash>
+
+h_gdb 中是待执行的指令
+[root@Anolis86n81p41 127.0.0.1-2023-06-08-03:12:30]# cat h_gdb
+list nlm_file.f_list -s nlm_file 0xffff8b68e4ae1f00
+list nlm_file.f_list -s nlm_file 0xffff8b6d81f71e00
+list nlm_file.f_list -s nlm_file 0xffff8b6c7aa65600
+```
