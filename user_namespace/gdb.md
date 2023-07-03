@@ -1,3 +1,6 @@
+# gdb切换线程
+1. info threads 显示所有线程信息；
+2. thread <thread_id> 切换指定线程
 # gdb设置运行参数
 1. 在终端中进入程序所在的目录。
 2. 启动gdb，输入命令：`gdb <可执行文件名>`。例如：`gdb myprogram`。
