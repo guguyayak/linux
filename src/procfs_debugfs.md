@@ -146,3 +146,11 @@ out_free:
 	return rv;
 }
 ```
+# debugfs
+```
+// 内核调用 debugfs_create_dir/file 创建debug文件
+debugfs_create_dir
+debugfs_create_file
+
+// debugfs根目录是：/sys/kernel/debug/
+```
