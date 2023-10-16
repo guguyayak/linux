@@ -424,3 +424,25 @@ list nlm_file.f_list -s nlm_file 0xffff8b68e4ae1f00
 list nlm_file.f_list -s nlm_file 0xffff8b6d81f71e00
 list nlm_file.f_list -s nlm_file 0xffff8b6c7aa65600
 ```
+# crash加载带debug信息的ko
+```
+[root@node114 lmm]# rpm -ql kernel-debuginfo|grep fuse
+/usr/lib/debug/lib/modules/5.10.0-136.12.0.86.4.hl202.x86_64/kernel/fs/fuse/fuse.ko-5.10.0-136.12.0.86.4.hl202.x86_64.debug
+
+mod -s fuse fuse.ko-5.10.0-136.12.0.86.4.hl202.x86_64.debug
+```
+# crash vmlinux显示版本不匹配(这个明确vmlinux和内核版本是匹配的)
+```
+crash /usr/lib/debug/usr/lib/modules/5.10.0-136.12.0.86.4.hl202.x86_64/vmlinux
+This program has absolutely no warranty.  Enter "help warranty" for details.
+
+WARNING: /usr/lib/debug/usr/lib/modules/5.10.0-136.12.0.86.4.hl202.x86_64/vmlinux
+         and /proc/version do not match!
+
+WARNING: /proc/version indicates kernel version: 5.10.0-136.12.0.86.4.hl202.x86_64
+
+crash: please use the vmlinux file for that kernel version, or try using
+       the System.map for that kernel version as an additional argument.
+
+用vi打开那个vmlinux文件 搜索一下/proc/version那部分  里面会显示字符串相关信息的   把那个编译时间相关的字段改成和/proc/version的时间字段一样
+```
