@@ -1,0 +1,353 @@
+(gdb) bt
+#0  clnt_ncreate (hostname=0x7f15a5413d11 "localhost", prog=100024, vers=1, nettype=0x7f15a5413d0d "tcp")
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/clnt.h:396
+#1  0x00007f15a53c32f1 in nsm_connect () at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c:58
+#2  0x00007f15a53c394c in nsm_monitor (host=0x7f154bc60080) at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c:118
+#3  0x00007f15a52fbd54 in get_nsm_client (care=CARE_MONITOR, xprt=0x7f153f844100, caller_name=0x7f154bc4f040 "client46")
+    at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:954
+#4  0x00007f15a53c2197 in nlm_process_parameters (req=0x7f154bc2d800, exclusive=true, alock=0x7f154bc2e028, plock=0x7f1529a87b50,
+    ppobj=0x7f1529a88398, care=CARE_MONITOR, ppnsm_client=0x7f1529a87b88, ppnlm_client=0x7f1529a87b80, ppowner=0x7f1529a87b78,
+    block_data=0x7f1529a87b48, nsm_state=3, state=0x7f1529a87b70) at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nlm_util.c:291
+#5  0x00007f15a53bd38b in nlm4_Lock (args=0x7f154bc2e010, req=0x7f154bc2d800, res=0x7f154bc58080)
+    at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nlm_Lock.c:105
+#6  0x00007f15a5266bef in nfs_rpc_process_request (reqdata=0x7f154bc2d800) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_worker_thread.c:1563
+#7  0x00007f15a5267138 in nfs_rpc_valid_NLM (req=0x7f154bc2d800) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_worker_thread.c:1748
+#8  0x00007f15a4ffc58c in svc_vc_decode (req=0x7f154bc2d800) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:923
+#9  0x00007f15a4ff82f1 in svc_request (xprt=0x7f153f844100, xdrs=0x7f154bc22180) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1294
+#10 0x00007f15a4ffc495 in svc_vc_recv (xprt=0x7f153f844100) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:896
+#11 0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f153f844338) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#12 0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#13 0x00007f15a50053e8 in work_pool_thread (arg=0x7f153dc0e0c0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#14 0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#15 0x00007f1599800b8d in clone () from /lib64/libc.so.6
+(gdb) p nsm_clnt
+$3 = (CLIENT *) 0x0
+(gdb) n
+397     in /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/clnt.h
+(gdb)
+nsm_connect () at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c:60
+60      /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c: No such file or directory.
+(gdb)
+72      in /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c
+(gdb) p nsm_clnt
+$4 = (CLIENT *) 0x7f154bc75140
+(gdb) p *(struct cx_data *) 0x7f154bc75140
+$5 = {cx_c = {cl_ops = 0x7f15a5234680 <ops.8484>, cl_netid = 0x7f154bc4e080 "tcp", cl_tp = 0x7f154bc4e090 "-", cl_u1 = 0x0, cl_u2 = 0x0, cl_lock = {
+      __data = {__lock = 0, __count = 0, __owner = 0, __nusers = 0, __kind = 3, __spins = 0, __elision = 0, __list = {__prev = 0x0, __next = 0x0}},
+      __size = '\000' <repeats 16 times>, "\003", '\000' <repeats 22 times>, __align = 0}, cl_error = {ru = {RE_errno = 0, RE_why = AUTH_OK,
+        RE_vers = {low = 0, high = 0}, RE_lb = {s1 = 0, s2 = 0}}, re_status = RPC_SUCCESS}, cl_refcnt = 1, cl_flags = 32768},
+  cx_rec = 0x7f154bc7a600, cx_mcallc = '\000' <repeats 11 times>, "\002\000\001\206\270\000\000\000\001\000\000\000", cx_mpos = 20}
+(gdb) b svc_ref_it if xprt == 0x7f154bc7a600
+Breakpoint 2 at 0x7f15a4ff22b7: svc_ref_it. (8 locations)
+(gdb) b svc_release_it if xprt == 0x7f154bc7a600
+Breakpoint 3 at 0x7f15a4fdbab0: svc_release_it. (15 locations)
+(gdb) c
+Continuing.
+[New Thread 0x7f155dfff700 (LWP 216658)]
+[Thread 0x7f1527e83700 (LWP 3974908) exited]
+[New Thread 0x7f1526b77700 (LWP 701991)]
+[Thread 0x7f155efff700 (LWP 3975646) exited]
+[New Thread 0x7f1527e83700 (LWP 702608)]
+
+Breakpoint 2, svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a50237f0 <__func__.12238> "svc_ioq_write_submit", line=461)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+540     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb) LogAndC
+xprt->xp_refcnt: 2
+#0  svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a50237f0 <__func__.12238> "svc_ioq_write_submit", line=461)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+#1  0x00007f15a5004cca in svc_ioq_write_submit (xprt=0x7f154bc7a600, xioq=0x7f154bc22480) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_ioq.c:461
+#2  0x00007f15a4fe0d83 in clnt_vc_call (cc=0x7f154bc8a300) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/clnt_vc.c:329
+#3  0x00007f15a4fde61a in clnt_req_wait_reply (cc=0x7f154bc8a300) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/clnt_generic.c:637
+#4  0x00007f15a53c3ca7 in nsm_monitor (host=0x7f154bc60080) at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c:136
+#5  0x00007f15a52fbd54 in get_nsm_client (care=CARE_MONITOR, xprt=0x7f153f844100, caller_name=0x7f154bc4f040 "client46")
+    at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:954
+#6  0x00007f15a53c2197 in nlm_process_parameters (req=0x7f154bc2d800, exclusive=true, alock=0x7f154bc2e028, plock=0x7f1529a87b50,
+    ppobj=0x7f1529a88398, care=CARE_MONITOR, ppnsm_client=0x7f1529a87b88, ppnlm_client=0x7f1529a87b80, ppowner=0x7f1529a87b78,
+    block_data=0x7f1529a87b48, nsm_state=3, state=0x7f1529a87b70) at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nlm_util.c:291
+#7  0x00007f15a53bd38b in nlm4_Lock (args=0x7f154bc2e010, req=0x7f154bc2d800, res=0x7f154bc58080)
+    at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nlm_Lock.c:105
+#8  0x00007f15a5266bef in nfs_rpc_process_request (reqdata=0x7f154bc2d800) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_worker_thread.c:1563
+#9  0x00007f15a5267138 in nfs_rpc_valid_NLM (req=0x7f154bc2d800) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_worker_thread.c:1748
+#10 0x00007f15a4ffc58c in svc_vc_decode (req=0x7f154bc2d800) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:923
+#11 0x00007f15a4ff82f1 in svc_request (xprt=0x7f153f844100, xdrs=0x7f154bc22180) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1294
+#12 0x00007f15a4ffc495 in svc_vc_recv (xprt=0x7f153f844100) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:896
+#13 0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f153f844338) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#14 0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#15 0x00007f15a50053e8 in work_pool_thread (arg=0x7f153dc0e0c0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#16 0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#17 0x00007f1599800b8d in clone () from /lib64/libc.so.6
+[Switching to Thread 0x7f1526d79700 (LWP 4079753)]
+
+Breakpoint 2, svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a5021660 <__func__.12320> "svc_rqst_rearm_events_locked", line=745)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+540     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb)
+xprt->xp_refcnt: 3
+#0  svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a5021660 <__func__.12320> "svc_rqst_rearm_events_locked", line=745)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+#1  0x00007f15a4ff6ef2 in svc_rqst_rearm_events_locked (xprt=0x7f154bc7a600, ev_flags=1) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:745
+#2  0x00007f15a4ffa531 in svc_rqst_rearm_events (xprt=0x7f154bc7a600, ev_flags=1) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_internal.h:167
+#3  0x00007f15a4ffc3e4 in svc_vc_recv (xprt=0x7f154bc7a600) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:879
+#4  0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f154bc7a838) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#5  0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#6  0x00007f15a50053e8 in work_pool_thread (arg=0x7f153680e0c0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#7  0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f1599800b8d in clone () from /lib64/libc.so.6
+[Thread 0x7f1529686700 (LWP 3606190) exited]
+[Switching to Thread 0x7f1526e7a700 (LWP 4079605)]
+
+Breakpoint 3, svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a5023791 <__func__.12217> "svc_ioq_write", line=399)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+563     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb)
+xprt->xp_refcnt: 4
+#0  svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a5023791 <__func__.12217> "svc_ioq_write", line=399)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+#1  0x00007f15a5004b10 in svc_ioq_write (xprt=0x7f154bc7a600) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_ioq.c:399
+#2  0x00007f15a5004b69 in svc_ioq_write_callback (wpe=0x7f154bc224f0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_ioq.c:410
+#3  0x00007f15a50053e8 in work_pool_thread (arg=0x7f155140e3e0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#4  0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#5  0x00007f1599800b8d in clone () from /lib64/libc.so.6
+[Switching to Thread 0x7f1526d79700 (LWP 4079753)]
+
+Breakpoint 2, svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a53ca010 <__func__.23556> "alloc_nfs_request", line=1444)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+540     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb)
+xprt->xp_refcnt: 3
+#0  svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a53ca010 <__func__.23556> "alloc_nfs_request", line=1444)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+#1  0x00007f15a526b0ad in alloc_nfs_request (xprt=0x7f154bc7a600, xdrs=0x7f154ac4c180)
+    at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_rpc_dispatcher_thread.c:1444
+#2  0x00007f15a4ff828d in svc_request (xprt=0x7f154bc7a600, xdrs=0x7f154ac4c180) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1284
+#3  0x00007f15a4ffc495 in svc_vc_recv (xprt=0x7f154bc7a600) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:896
+#4  0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f154bc7a838) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#5  0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#6  0x00007f15a50053e8 in work_pool_thread (arg=0x7f153680e0c0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#7  0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f1599800b8d in clone () from /lib64/libc.so.6
+
+Breakpoint 3, svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a53ca030 <__func__.23565> "free_nfs_request", line=1509)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+563     in /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h
+(gdb)
+xprt->xp_refcnt: 4
+#0  svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a53ca030 <__func__.23565> "free_nfs_request", line=1509)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+#1  0x00007f15a526b354 in free_nfs_request (req=0x7f154ac55800, stat=XPRT_IDLE) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_rpc_dispatcher_thread.c:1509
+#2  0x00007f15a4ff8372 in svc_request (xprt=0x7f154bc7a600, xdrs=0x7f154ac4c180) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1309
+#3  0x00007f15a4ffc495 in svc_vc_recv (xprt=0x7f154bc7a600) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:896
+#4  0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f154bc7a838) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#5  0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#6  0x00007f15a50053e8 in work_pool_thread (arg=0x7f153680e0c0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#7  0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f1599800b8d in clone () from /lib64/libc.so.6
+
+Breakpoint 3, svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a50217a0 <__func__.12391> "svc_rqst_xprt_task_recv", line=1277)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+563     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb)
+xprt->xp_refcnt: 3
+#0  svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a50217a0 <__func__.12391> "svc_rqst_xprt_task_recv", line=1277)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+#1  0x00007f15a4ff825d in svc_rqst_xprt_task_recv (wpe=0x7f154bc7a838) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1277
+#2  0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#3  0x00007f15a50053e8 in work_pool_thread (arg=0x7f153680e0c0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#4  0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#5  0x00007f1599800b8d in clone () from /lib64/libc.so.6
+[Thread 0x7f155dfff700 (LWP 216658) exited]
+[New Thread 0x7f1529686700 (LWP 1069536)]
+[Thread 0x7f1526b77700 (LWP 701991) exited]
+[New Thread 0x7f155dfff700 (LWP 1070141)]
+[Thread 0x7f1527e83700 (LWP 702608) exited]
+[New Thread 0x7f1526b77700 (LWP 1070509)]
+[Thread 0x7f1529686700 (LWP 1069536) exited]
+[New Thread 0x7f1527e83700 (LWP 1437977)]
+[Thread 0x7f1528684700 (LWP 3607129) exited]
+[New Thread 0x7f1529686700 (LWP 1438562)]
+[Thread 0x7f1526b77700 (LWP 1070509) exited]
+[New Thread 0x7f1528684700 (LWP 1438918)]
+[Switching to Thread 0x7f1526f7b700 (LWP 4079441)]
+
+Breakpoint 2, svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a50237f0 <__func__.12238> "svc_ioq_write_submit", line=461)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+540     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb)
+xprt->xp_refcnt: 2
+#0  svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a50237f0 <__func__.12238> "svc_ioq_write_submit", line=461)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+#1  0x00007f15a5004cca in svc_ioq_write_submit (xprt=0x7f154bc7a600, xioq=0x7f154a84c300) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_ioq.c:461
+#2  0x00007f15a4fe0d83 in clnt_vc_call (cc=0x7f154a898600) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/clnt_vc.c:329
+#3  0x00007f15a4fde61a in clnt_req_wait_reply (cc=0x7f154a898600) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/clnt_generic.c:637
+#4  0x00007f15a53c4c3b in nsm_unmonitor (host=0x7f154bc60080) at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c:221
+#5  0x00007f15a52fb356 in dec_nsm_client_ref (client=0x7f154bc60080) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:797
+#6  0x00007f15a52fbd98 in free_nlm_client (client=0x7f154b03c180) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:979
+#7  0x00007f15a52fc16c in dec_nlm_client_ref (client=0x7f154b03c180) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:1075
+#8  0x00007f15a52fc9b2 in free_nlm_owner (owner=0x7f154b070200) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:1259
+#9  0x00007f15a52d7cb1 in free_state_owner (owner=0x7f154b070200) at /tmp/NFS-Ganesha-3.2/src/SAL/state_misc.c:818
+#10 0x00007f15a52d82a9 in dec_state_owner_ref (owner=0x7f154b070200) at /tmp/NFS-Ganesha-3.2/src/SAL/state_misc.c:968
+#11 0x00007f15a53bf2d6 in nlm4_Unlock (args=0x7f154a857010, req=0x7f154a856800, res=0x7f154a881080)
+    at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nlm_Unlock.c:119
+#12 0x00007f15a5266bef in nfs_rpc_process_request (reqdata=0x7f154a856800) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_worker_thread.c:1563
+#13 0x00007f15a5267138 in nfs_rpc_valid_NLM (req=0x7f154a856800) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_worker_thread.c:1748
+#14 0x00007f15a4ffc58c in svc_vc_decode (req=0x7f154a856800) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:923
+#15 0x00007f15a4ff82f1 in svc_request (xprt=0x7f153f844100, xdrs=0x7f154a84c180) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1294
+#16 0x00007f15a4ffc495 in svc_vc_recv (xprt=0x7f153f844100) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:896
+#17 0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f153f844338) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#18 0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#19 0x00007f15a50053e8 in work_pool_thread (arg=0x7f154e80e2a0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#20 0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#21 0x00007f1599800b8d in clone () from /lib64/libc.so.6
+[Switching to Thread 0x7f1526d79700 (LWP 4079753)]
+
+Breakpoint 2, svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a5021660 <__func__.12320> "svc_rqst_rearm_events_locked", line=745)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+540     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb)
+xprt->xp_refcnt: 3
+#0  svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a5021660 <__func__.12320> "svc_rqst_rearm_events_locked", line=745)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+#1  0x00007f15a4ff6ef2 in svc_rqst_rearm_events_locked (xprt=0x7f154bc7a600, ev_flags=1) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:745
+#2  0x00007f15a4ffa531 in svc_rqst_rearm_events (xprt=0x7f154bc7a600, ev_flags=1) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_internal.h:167
+#3  0x00007f15a4ffc3e4 in svc_vc_recv (xprt=0x7f154bc7a600) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:879
+#4  0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f154bc7a838) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#5  0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#6  0x00007f15a50053e8 in work_pool_thread (arg=0x7f153680e0c0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#7  0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f1599800b8d in clone () from /lib64/libc.so.6
+[Switching to Thread 0x7f1527581700 (LWP 4078322)]
+
+Breakpoint 3, svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a5023791 <__func__.12217> "svc_ioq_write", line=399)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+563     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb)
+xprt->xp_refcnt: 4
+#0  svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a5023791 <__func__.12217> "svc_ioq_write", line=399)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+#1  0x00007f15a5004b10 in svc_ioq_write (xprt=0x7f154bc7a600) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_ioq.c:399
+#2  0x00007f15a5004b69 in svc_ioq_write_callback (wpe=0x7f154a84c370) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_ioq.c:410
+#3  0x00007f15a50053e8 in work_pool_thread (arg=0x7f154980e160) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#4  0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#5  0x00007f1599800b8d in clone () from /lib64/libc.so.6
+[Switching to Thread 0x7f1526d79700 (LWP 4079753)]
+
+Breakpoint 2, svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a53ca010 <__func__.23556> "alloc_nfs_request", line=1444)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+540     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb)
+xprt->xp_refcnt: 3
+#0  svc_ref_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a53ca010 <__func__.23556> "alloc_nfs_request", line=1444)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+#1  0x00007f15a526b0ad in alloc_nfs_request (xprt=0x7f154bc7a600, xdrs=0x7f154ac4c180)
+    at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_rpc_dispatcher_thread.c:1444
+#2  0x00007f15a4ff828d in svc_request (xprt=0x7f154bc7a600, xdrs=0x7f154ac4c180) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1284
+#3  0x00007f15a4ffc495 in svc_vc_recv (xprt=0x7f154bc7a600) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:896
+#4  0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f154bc7a838) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#5  0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#6  0x00007f15a50053e8 in work_pool_thread (arg=0x7f153680e0c0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#7  0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f1599800b8d in clone () from /lib64/libc.so.6
+
+Breakpoint 3, svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a53ca030 <__func__.23565> "free_nfs_request", line=1509)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+563     in /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h
+(gdb)
+xprt->xp_refcnt: 4
+#0  svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a53ca030 <__func__.23565> "free_nfs_request", line=1509)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+#1  0x00007f15a526b354 in free_nfs_request (req=0x7f154ac55800, stat=XPRT_IDLE) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_rpc_dispatcher_thread.c:1509
+#2  0x00007f15a4ff8372 in svc_request (xprt=0x7f154bc7a600, xdrs=0x7f154ac4c180) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1309
+#3  0x00007f15a4ffc495 in svc_vc_recv (xprt=0x7f154bc7a600) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:896
+#4  0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f154bc7a838) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#5  0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#6  0x00007f15a50053e8 in work_pool_thread (arg=0x7f153680e0c0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#7  0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f1599800b8d in clone () from /lib64/libc.so.6
+
+Breakpoint 3, svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a50217a0 <__func__.12391> "svc_rqst_xprt_task_recv", line=1277)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+563     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb)
+xprt->xp_refcnt: 3
+#0  svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a50217a0 <__func__.12391> "svc_rqst_xprt_task_recv", line=1277)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+#1  0x00007f15a4ff825d in svc_rqst_xprt_task_recv (wpe=0x7f154bc7a838) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1277
+#2  0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#3  0x00007f15a50053e8 in work_pool_thread (arg=0x7f153680e0c0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#4  0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#5  0x00007f1599800b8d in clone () from /lib64/libc.so.6
+[Switching to Thread 0x7f1526f7b700 (LWP 4079441)]
+
+Breakpoint 3, svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a501bc60 <__func__.8480> "clnt_vc_destroy", line=462)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+563     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+(gdb)
+xprt->xp_refcnt: 2
+#0  svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a501bc60 <__func__.8480> "clnt_vc_destroy", line=462)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+#1  0x00007f15a4fe105c in clnt_vc_destroy (clnt=0x7f154bc75140) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/clnt_vc.c:462
+#2  0x00007f15a53c2fe8 in clnt_release_it (clnt=0x7f154bc75140, flags=0, tag=0x7f15a5413f50 <__func__.18936> "nsm_disconnect", line=80)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/clnt.h:319
+#3  0x00007f15a53c3089 in clnt_destroy_it (clnt=0x7f154bc75140, tag=0x7f15a5413f50 <__func__.18936> "nsm_disconnect", line=80)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/clnt.h:341
+#4  0x00007f15a53c3453 in nsm_disconnect () at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c:80
+#5  0x00007f15a53c4fc1 in nsm_unmonitor (host=0x7f154bc60080) at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c:245
+#6  0x00007f15a52fb356 in dec_nsm_client_ref (client=0x7f154bc60080) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:797
+#7  0x00007f15a52fbd98 in free_nlm_client (client=0x7f154b03c180) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:979
+#8  0x00007f15a52fc16c in dec_nlm_client_ref (client=0x7f154b03c180) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:1075
+#9  0x00007f15a52fc9b2 in free_nlm_owner (owner=0x7f154b070200) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:1259
+#10 0x00007f15a52d7cb1 in free_state_owner (owner=0x7f154b070200) at /tmp/NFS-Ganesha-3.2/src/SAL/state_misc.c:818
+#11 0x00007f15a52d82a9 in dec_state_owner_ref (owner=0x7f154b070200) at /tmp/NFS-Ganesha-3.2/src/SAL/state_misc.c:968
+#12 0x00007f15a53bf2d6 in nlm4_Unlock (args=0x7f154a857010, req=0x7f154a856800, res=0x7f154a881080)
+    at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nlm_Unlock.c:119
+#13 0x00007f15a5266bef in nfs_rpc_process_request (reqdata=0x7f154a856800) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_worker_thread.c:1563
+#14 0x00007f15a5267138 in nfs_rpc_valid_NLM (req=0x7f154a856800) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_worker_thread.c:1748
+#15 0x00007f15a4ffc58c in svc_vc_decode (req=0x7f154a856800) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:923
+#16 0x00007f15a4ff82f1 in svc_request (xprt=0x7f153f844100, xdrs=0x7f154a84c180) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1294
+#17 0x00007f15a4ffc495 in svc_vc_recv (xprt=0x7f153f844100) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:896
+#18 0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f153f844338) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#19 0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#20 0x00007f15a50053e8 in work_pool_thread (arg=0x7f154e80e2a0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#21 0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#22 0x00007f1599800b8d in clone () from /lib64/libc.so.6
+
+Breakpoint 3, svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a501bc60 <__func__.8480> "clnt_vc_destroy", line=466)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+563     in /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h
+(gdb)
+xprt->xp_refcnt: 1
+#0  svc_release_it (xprt=0x7f154bc7a600, flags=0, tag=0x7f15a501bc60 <__func__.8480> "clnt_vc_destroy", line=466)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+#1  0x00007f15a4fe030e in svc_destroy_it (xprt=0x7f154bc7a600, tag=0x7f15a501bc60 <__func__.8480> "clnt_vc_destroy", line=466)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:625
+#2  0x00007f15a4fe1085 in clnt_vc_destroy (clnt=0x7f154bc75140) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/clnt_vc.c:466
+#3  0x00007f15a53c2fe8 in clnt_release_it (clnt=0x7f154bc75140, flags=0, tag=0x7f15a5413f50 <__func__.18936> "nsm_disconnect", line=80)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/clnt.h:319
+#4  0x00007f15a53c3089 in clnt_destroy_it (clnt=0x7f154bc75140, tag=0x7f15a5413f50 <__func__.18936> "nsm_disconnect", line=80)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/clnt.h:341
+#5  0x00007f15a53c3453 in nsm_disconnect () at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c:80
+#6  0x00007f15a53c4fc1 in nsm_unmonitor (host=0x7f154bc60080) at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nsm.c:245
+#7  0x00007f15a52fb356 in dec_nsm_client_ref (client=0x7f154bc60080) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:797
+#8  0x00007f15a52fbd98 in free_nlm_client (client=0x7f154b03c180) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:979
+#9  0x00007f15a52fc16c in dec_nlm_client_ref (client=0x7f154b03c180) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:1075
+#10 0x00007f15a52fc9b2 in free_nlm_owner (owner=0x7f154b070200) at /tmp/NFS-Ganesha-3.2/src/SAL/nlm_owner.c:1259
+#11 0x00007f15a52d7cb1 in free_state_owner (owner=0x7f154b070200) at /tmp/NFS-Ganesha-3.2/src/SAL/state_misc.c:818
+#12 0x00007f15a52d82a9 in dec_state_owner_ref (owner=0x7f154b070200) at /tmp/NFS-Ganesha-3.2/src/SAL/state_misc.c:968
+#13 0x00007f15a53bf2d6 in nlm4_Unlock (args=0x7f154a857010, req=0x7f154a856800, res=0x7f154a881080)
+    at /tmp/NFS-Ganesha-3.2/src/Protocols/NLM/nlm_Unlock.c:119
+#14 0x00007f15a5266bef in nfs_rpc_process_request (reqdata=0x7f154a856800) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_worker_thread.c:1563
+#15 0x00007f15a5267138 in nfs_rpc_valid_NLM (req=0x7f154a856800) at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_worker_thread.c:1748
+#16 0x00007f15a4ffc58c in svc_vc_decode (req=0x7f154a856800) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:923
+#17 0x00007f15a4ff82f1 in svc_request (xprt=0x7f153f844100, xdrs=0x7f154a84c180) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1294
+#18 0x00007f15a4ffc495 in svc_vc_recv (xprt=0x7f153f844100) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:896
+#19 0x00007f15a4ff8237 in svc_rqst_xprt_task_recv (wpe=0x7f153f844338) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#20 0x00007f15a4ff8e08 in svc_rqst_epoll_loop (wpe=0x7f1594770318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#21 0x00007f15a50053e8 in work_pool_thread (arg=0x7f154e80e2a0) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#22 0x00007f15a3167ea5 in start_thread () from /lib64/libpthread.so.0
+#23 0x00007f1599800b8d in clone () from /lib64/libc.so.6
+[Thread 0x7f155cfff700 (LWP 3975479) exited]
+[New Thread 0x7f1526b77700 (LWP 1805525)]
+[Thread 0x7f1529686700 (LWP 1438562) exited]
+[New Thread 0x7f155cfff700 (LWP 1805986)]
+[Thread 0x7f1571ffd700 (LWP 3015430) exited]
