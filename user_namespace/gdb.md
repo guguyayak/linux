@@ -165,3 +165,62 @@ Symbol "test" is a function at address 0x9e250
 (gdb) info symbol 0x9e250
 test in section .text
 ```
+# 多个断点，if判断不同断点
+## 断点信息(断点函数是ganesha.nfsd中函数)
+```bash
+(gdb) b svc_vc_xprt_setup
+Breakpoint 7 at 0x7fe58354d615: file /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c, line 138.
+(gdb) b svc_ref_it if xprt->xp_type == 4
+Breakpoint 8 at 0x7fe5835452b7: svc_ref_it. (8 locations)
+(gdb) b svc_release_it if xprt->xp_type == 4
+Breakpoint 9 at 0x7fe58352eab0: svc_release_it. (15 locations)
+Breakpoint 1, svc_vc_xprt_setup (sxpp=0x7f5d13f71fe8) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:138
+138     /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c: No such file or directory.
+Breakpoint 2, svc_ref_it (xprt=0x7f5d84c2c700, flags=0, tag=0x7f5d9565f660 <__func__.12320> "svc_rqst_rearm_events_locked", line=745)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+540     /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h: No such file or directory.
+Breakpoint 3, svc_release_it (xprt=0x7f5d43fe1800, flags=0, tag=0x7f5d95661791 <__func__.12217> "svc_ioq_write", line=399)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:563
+563     in /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h
+```
+## python 脚本信息
+```bash
+[root@node131 lmm]# cat bt_line.py
+import gdb
+
+def p_bt_c():
+    c_bp = gdb.selected_frame().find_sal().line
+
+    if c_bp != 138:
+        xprt_ref_v = gdb.parse_and_eval('xprt->xp_refcnt')
+        print("xprt->xp_refcnt: {}".format(int(xprt_ref_v)))
+
+    gdb.execute("bt")
+    gdb.execute("c")
+
+class LogAndC(gdb.Command):
+    def __init__(self):
+        super(LogAndC, self).__init__("LogAndC_func", gdb.COMMAND_USER)
+
+    def invoke(self, arg, from_tty):
+        p_bt_c()
+
+LogAndC()
+```
+# 脚本执行
+```bash
+(gdb) source ./bt_line.py
+(gdb) LogAndC
+xprt->xp_refcnt: 3
+#0  svc_ref_it (xprt=0x7f58a8824100, flags=0, tag=0x7f58fb66a010 <__func__.23556> "alloc_nfs_request", line=1444)
+    at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
+#1  0x00007f58fb50b0ad in alloc_nfs_request (xprt=0x7f58a8824100, xdrs=0x7f58a4c58180)
+    at /tmp/NFS-Ganesha-3.2/src/MainNFSD/nfs_rpc_dispatcher_thread.c:1444
+#2  0x00007f58fb29828d in svc_request (xprt=0x7f58a8824100, xdrs=0x7f58a4c58180) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1284
+#3  0x00007f58fb29c495 in svc_vc_recv (xprt=0x7f58a8824100) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_vc.c:896
+#4  0x00007f58fb298237 in svc_rqst_xprt_task_recv (wpe=0x7f58a8824338) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1272
+#5  0x00007f58fb298e08 in svc_rqst_epoll_loop (wpe=0x7f58eab70318) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/svc_rqst.c:1659
+#6  0x00007f58fb2a53e8 in work_pool_thread (arg=0x7f58a800e480) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
+#7  0x00007f58f9407ea5 in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f58efaa0b8d in clone () from /lib64/libc.so.6
+```
