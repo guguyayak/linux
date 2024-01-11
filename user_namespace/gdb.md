@@ -185,33 +185,38 @@ Breakpoint 3, svc_release_it (xprt=0x7f5d43fe1800, flags=0, tag=0x7f5d95661791 <
 ```
 ## python 脚本信息
 ```bash
-[root@node131 lmm]# cat bt_line.py
+[root@node131 lmm]# cat p_bt_c.py
 import gdb
 
-def p_bt_c():
+def LogAndC():
     c_bp = gdb.selected_frame().find_sal().line
+    thread = gdb.selected_thread().ptid[1]
+    func = gdb.selected_frame().function().name
 
-    if c_bp != 138:
+    if c_bp == 554 or c_bp == 577:
         xprt_ref_v = gdb.parse_and_eval('xprt->xp_refcnt')
-        print("xprt->xp_refcnt: {}".format(int(xprt_ref_v)))
+        print("func {} xprt->xp_refcnt: {} tid {}".format(func, int(xprt_ref_v), int(thread)))
+    if c_bp == 1276:
+        print("func {} tid {}".format(func, int(thread)))
+        gdb.execute("p stat")
 
     gdb.execute("bt")
     gdb.execute("c")
 
-class LogAndC(gdb.Command):
+class p_bt_c(gdb.Command):
     def __init__(self):
-        super(LogAndC, self).__init__("LogAndC_func", gdb.COMMAND_USER)
+        super(p_bt_c, self).__init__("p_bt_c_func", gdb.COMMAND_USER)
 
     def invoke(self, arg, from_tty):
-        p_bt_c()
+        LogAndC()
 
-LogAndC()
+p_bt_c()
 ```
-# 脚本执行
+## 脚本执行
 ```bash
-(gdb) source ./bt_line.py
-(gdb) LogAndC
-xprt->xp_refcnt: 3
+(gdb) source ./p_bt_c.py
+(gdb) p_bt_c
+func svc_ref_it xprt->xp_refcnt: 2 tid 3156343
 #0  svc_ref_it (xprt=0x7f58a8824100, flags=0, tag=0x7f58fb66a010 <__func__.23556> "alloc_nfs_request", line=1444)
     at /tmp/NFS-Ganesha-3.2/src/libntirpc/ntirpc/rpc/svc.h:540
 #1  0x00007f58fb50b0ad in alloc_nfs_request (xprt=0x7f58a8824100, xdrs=0x7f58a4c58180)
@@ -223,4 +228,16 @@ xprt->xp_refcnt: 3
 #6  0x00007f58fb2a53e8 in work_pool_thread (arg=0x7f58a800e480) at /tmp/NFS-Ganesha-3.2/src/libntirpc/src/work_pool.c:184
 #7  0x00007f58f9407ea5 in start_thread () from /lib64/libpthread.so.0
 #8  0x00007f58efaa0b8d in clone () from /lib64/libc.so.6
+```
+另：
+```bash
+[root@node131 lmm]# cat nsm_break.gdb
+set $p = ((struct cx_data *) nsm_clnt)->cx_rec
+set logging off
+set logging file 0109_outfile_ccc_svc_0
+set logging on
+p nsm_clnt
+b svc_ref_it if xprt == $p
+b svc_release_it if xprt == $p
+b insert_nlm_xprtlist
 ```
