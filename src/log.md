@@ -56,5 +56,7 @@ example:
 ```
 ## 打印调用栈
 > dump_stack();
+## 变量指针
+> 内核日志打印printk格式：%p打印的指针地址是经过hash后的值，如果需要打印实际的指针地址，需要改为%px
 # 函数名
 > strcmp(current->comm, "nfsd");
