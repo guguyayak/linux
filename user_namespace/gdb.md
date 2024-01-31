@@ -241,3 +241,4 @@ b svc_ref_it if xprt == $p
 b svc_release_it if xprt == $p
 b insert_nlm_xprtlist
 ```
+# [gdb magic](http://luajit.io/posts/gdb-black-magics/)
