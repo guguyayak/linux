@@ -241,4 +241,14 @@ b svc_ref_it if xprt == $p
 b svc_release_it if xprt == $p
 b insert_nlm_xprtlist
 ```
+# readelf 导出结构体大小
+```
+使用 readelf -wi   带debug信息的二进制文件 导出的信息里面会包含以下相关的字段  aaabbb代表对应的结构体名称   DW_AT_byte_size   : 96表示aaabbb结构体的大小为96   你们看下可不可以用这个方式导一下  
+ <1><73>: Abbrev Number: 4 (DW_TAG_structure_type)
+    <74>   DW_AT_name        : (indirect string, offset: 0x92): aaabbb
+    <78>   DW_AT_byte_size   : 96
+    <79>   DW_AT_decl_file   : 1
+    <7a>   DW_AT_decl_line   : 2
+    <7b>   DW_AT_sibling     : <0xa8>
+```
 # [gdb magic](http://luajit.io/posts/gdb-black-magics/)
