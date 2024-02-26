@@ -15,3 +15,4 @@ nodelist 文件保存节点ip
 # lsof（list open files）
 > -p<进程号> 列出指定进程号所打开的文件   
 # slabtop 查看系统 slab 使用情况
+# [auditd](https://eternalcenter.com/auditd/)
