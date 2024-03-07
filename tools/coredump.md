@@ -77,9 +77,9 @@ ulimit -c 1073741824
 请在/var目录下先建立core文件夹，然后执行a.out程序，就会在/var/core/下产生以指定格式命名的内核转储文件。
 
 # 让系统主动宕机
-> echo 1 > /proc/sys/kernel/sysrq #打开sysrq
-> echo  c  > /proc/sysrq-trigger
-> 可能因为core dump内存不够而无法生成vmcore文件
+> echo 1 > /proc/sys/kernel/sysrq #打开sysrq   
+> echo  c  > /proc/sysrq-trigger   
+> 可能因为core dump内存不够而无法生成vmcore文件   
 ```
 # 查看core dump内存
 [root@node2 ~]# kdumpctl showmem
