@@ -251,4 +251,11 @@ b insert_nlm_xprtlist
     <7a>   DW_AT_decl_line   : 2
     <7b>   DW_AT_sibling     : <0xa8>
 ```
+# 获取线程号
+```
+(gdb) t f 971861
+Thread 6 has target id 'Thread 0x7f3cfb692700 (LWP 971861)'
+```
+# 打印结构体定义
+> ptype struct struct_name   
 # [gdb magic](http://luajit.io/posts/gdb-black-magics/)
