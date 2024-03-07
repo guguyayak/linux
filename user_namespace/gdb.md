@@ -62,7 +62,7 @@ The info locals command displays the local variable values in the current frame.
 Note that the info locals command does not display the information about the function arguments. Use the info args command to list function arguments.
 ```
 # [gdb手册](https://sourceware.org/gdb/onlinedocs/gdb/Threads.html)
-# [gdb使用技巧](https://wizardforcel.gitbooks.io/100-gdb-tips/content/print-threads.html)
+# [gdb使用技巧](https://wizardforcel.gitbooks.io/100-gdb-tips/content/)
 # 强制生成core文件
 > gcore [pid]   
 > 该指令会执行 gdb attach [pid]，生成core的过程中会阻塞进程
