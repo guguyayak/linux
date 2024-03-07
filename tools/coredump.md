@@ -77,8 +77,22 @@ ulimit -c 1073741824
 请在/var目录下先建立core文件夹，然后执行a.out程序，就会在/var/core/下产生以指定格式命名的内核转储文件。
 
 # 让系统主动宕机
+> echo 1 > /proc/sys/kernel/sysrq #打开sysrq
 > echo  c  > /proc/sysrq-trigger
+> 可能因为core dump内存不够而无法生成vmcore文件
+```
+# 查看core dump内存
+[root@node2 ~]# kdumpctl showmem
+Reserved 1024MB memory for crash kernel
+# 改变core dump内存
+/etc/default/grub文件中
+GRUB_CMDLINE_LINUX="crashkernel=auto 改为 crashkernel=1G
+/etc/grub2-efi.cfg 文件中：
+linuxefi /vmlinuz-4.14.0-49.hl28.x86_64 root=UUID=3ae788ab-5e25-4e75-ada7-a1f4d8f2ccb5 ro crashkernel=auto rd.md.uuid=a838a0ba:7b610187:b37b664a:03d8edc0 rd.md.uuid=aadd136e:cf397b79:e42a7072:5be2d944 rhgb quiet LANG=en_US.UTF-8
+crashkernel=auto 改为 crashkernel=1G
 
+重启主机生效
+```
 # core文件分析
 
 分析vmcore文件需要安装对应版本内核的kernel-debuginfo-common和kernel-debuginfo两个RPM包
