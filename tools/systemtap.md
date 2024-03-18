@@ -126,6 +126,7 @@ with default GCC parameters into a user module.  Multiple headers may be specifi
              "kernel<linux/sched.h><linux/fs_struct.h>")->fs->umask
 stap -d kernel -ve 'probe module("fuse").function("fuse_perform_write") {printf("big_writes %d\n", @cast($mapping->host->i_sb->s_fs_info, "fuse_conn")->big_writes);}'
 s_fs_info 在 i_sb 中是 void 类型指针。
+printf("xprt sc_cm_id: %p\n", @cast($xprt, "svcxprt_rdma", "kernel<linux/sunrpc/svc_rdma.h>")->sc_cm_id)
 ```
 # @defined 判断成员是否存在
 ```c
