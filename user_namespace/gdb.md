@@ -55,6 +55,16 @@ gdb界面打印内存都会保存到gdb.log文件中
 (gdb) x/1s [addr]  打印字符串
 以二进制打印addr1~addr2的内存
 (gdb) dump binary memory result.bin [addr1] [addr2]
+
+可以用“disas /m fun”（disas是disassemble命令缩写）命令将函数代码和汇编指令映射起来
+如果想在调试一个线程时，让其它线程暂停执行，可以使用“set scheduler-locking on”命令
+在使用gdb时，如果想让断点只生效一次，可以使用“tbreak”命令（缩写为：tb）
+当gdb启动时，会读取HOME目录和当前目录下的的配置文件，执行里面的命令。这个文件通常为“.gdbinit”。
+# 保存历史命令
+set history filename ~/.gdb_history
+set history save on
+# 每行打印一个结构体成员
+set print pretty on
 ```
 # gdb指令：[info locals](https://visualgdb.com/gdbreference/commands/info_locals)
 ```
