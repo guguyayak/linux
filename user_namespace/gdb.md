@@ -269,3 +269,94 @@ Thread 6 has target id 'Thread 0x7f3cfb692700 (LWP 971861)'
 # 打印结构体定义
 > ptype struct struct_name   
 # [gdb magic](http://luajit.io/posts/gdb-black-magics/)
+# 打印sockaddr 地址
+```
+(gdb) set $addr_buf = (char*)malloc(400)
+(gdb) call (void)inet_ntop(10, (void *)&((struct sockaddr_in6 *)0x7fcb2ec8e010)->sin6_addr, $addr_buf, 400)
+(gdb) p $addr_buf
+$13 = 0x7fcbd7e4c6c0 "::ffff:10.121.29.127"
+
+1. IPv4: struct sockaddr_in, 16个字节
+
+ 1 struct sockaddr_in {
+ 2      sa_family_t sin_family;             /* AF_INET */
+ 3      in_port_t sin_port;                 /* Port number.  */
+ 4      struct in_addr sin_addr;            /* Internet address.  */
+ 5 
+ 6      /* Pad to size of `struct sockaddr'.  */
+ 7      unsigned char sin_zero[sizeof (struct sockaddr) -
+ 8                             sizeof (sa_family_t) -
+ 9                             sizeof (in_port_t) -
+10                             sizeof (struct in_addr)];
+11 };
+12 typedef uint32_t in_addr_t;
+13 struct in_addr  {
+14     in_addr_t s_addr;                    /* IPv4 address */
+15 };
+
+2. IPv6: struct sockaddr_in6, 28个字节
+
+ 1 struct sockaddr_in6 {
+ 2     sa_family_t sin6_family;    /* AF_INET6 */
+ 3     in_port_t sin6_port;        /* Transport layer port # */
+ 4     uint32_t sin6_flowinfo;     /* IPv6 flow information */
+ 5     struct in6_addr sin6_addr;  /* IPv6 address */
+ 6     uint32_t sin6_scope_id;     /* IPv6 scope-id */
+ 7 };
+ 8 struct in6_addr {
+ 9     union {
+10         uint8_t u6_addr8[16];
+11         uint16_t u6_addr16[8];
+12         uint32_t u6_addr32[4];
+13     } in6_u;
+14 
+15     #define s6_addr                 in6_u.u6_addr8
+16     #define s6_addr16               in6_u.u6_addr16
+17     #define s6_addr32               in6_u.u6_addr32
+18 };
+
+3. 通用结构体1: struct sockaddr, 16个字节
+
+1 struct sockaddr { 
+2      sa_family_t sa_family;       /* Address family */
+3      char sa_data[14];            /* protocol-specific address */
+4 };
+4. 通用结构体2: struct sockaddr_storage,128个字节
+
+ 1 /* Structure large enough to hold any socket address 
+ 2 (with the historical exception of AF_UNIX). 128 bytes reserved.  */
+ 3 
+ 4 #if ULONG_MAX > 0xffffffff
+ 5 # define __ss_aligntype __uint64_t
+ 6 #else
+ 7 # define __ss_aligntype __uint32_t
+ 8 #endif
+ 9 #define _SS_SIZE        128
+10 #define _SS_PADSIZE     (_SS_SIZE - (2 * sizeof (__ss_aligntype)))
+11 
+12 struct sockaddr_storage
+13 {
+14     sa_family_t ss_family;      /* Address family */
+15     __ss_aligntype __ss_align;  /* Force desired alignment.  */
+16     char __ss_padding[_SS_PADSIZE];
+17 };
+
+struct sockaddr_storage addr;
+memset(&addr, 0, sizeof(struct sockaddr_storage));
+if (isIPv6 == TRUE)
+{
+    struct sockaddr_in6 *addr_v6 = (struct sockaddr_in6 *)&addr;
+    addr_v6->sin6_family = AF_INET6;
+    addr_v6->sin6_port = 1234;
+    inet_pton(AF_INET6, “2001:3211::1”, &(addr_v6->sin6_addr));
+}
+else
+{
+    struct sockaddr_in *addr_v4 = (struct sockaddr_in *)&addr;
+    addr_v4->sin_family = AF_INET;
+    addr_v4->sin_port = 1234;
+    inet_aton(“192.168.1.228”, &(addr_v4->sin_addr));
+}
+
+sendto(sock, buf, len, 0, (struct sockaddr *)&addr, sizeof(struct sockaddr_storage));
+```
