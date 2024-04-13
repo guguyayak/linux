@@ -1,3 +1,5 @@
+# 跟踪进程事件
+> strace -f -p 2683703 -e trace=epoll_ctl,epoll_wait    
 # 监控进程内存占用，超过阈值生成core
 ```sh
 #!/bin/bash
