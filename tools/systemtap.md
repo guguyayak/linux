@@ -188,14 +188,16 @@ kernel_string(address)
 kernel_string_n(address,n)
 
 为了方便获取参数，systemtap提供了一个方法
-
 直接使用$$var就可以打印函数参数和变量。
-
 如果使用$$locals,就是打印局部变量
-
 $$parms就只打印函数阐述
-
 $$return 打印返回值，只在返回探针能用。
+
+打印入参是int类型指针值：kernel_long($ppos)
+probe module("ceph").function("ceph_generic_file_splice_read") {
+        printf("inode:%p ino %ld pos %ld isize %ld\n",
+                $in->f_mapping->host, $in->f_mapping->host->i_ino, kernel_long($ppos), $in->f_mapping->host->i_size);
+}
 ```
 # 执行文件
 ```c
