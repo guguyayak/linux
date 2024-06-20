@@ -23,6 +23,18 @@ auto           fg             mounthost=     noatime        nomand         proto
 
 acregmin=1,acregmax=1 // 文件的属性有效时间，调小nfs客户端可能会频繁发getattr请求
 lookupcache="none" // 不缓存 lookup 结果，nfs客户端访问文件每次都会发起 lookup 请求
+
+[root@localhost ~]# mount -t nfs -o
+ac             bg             fsc(和服务端无关，NFS客户端磁盘缓存)            mountport=     noauto         nordirplus（readdir不获取属性信息）     rdirplus（readdir不获取属性信息）       rw（挂载目录读写权限）             user
+acdirmax=      context=       fscontext=     mountproto=    nocto          norelatime     rdma（rdma网络，我们现在不支持）           sec=（安全认证方式，默认sys，我们只支持sys）           users
+acdirmin=      cto            group          mountvers=     nodev          noresvport     relatime       sharecache     vers=（nfs协议版本，我们只支持3，还要4.0，4.1，4.2）
+acl            defaults       hard（指定此参数挂载卡住NFS客户端一直尝试）           namlen=lock    nodiratime     nosharecache   remount（重新挂载）        softhard（指定此参数挂载卡住NFS客户端尝试一定次数反错）           wsize=（一次写请求的最大字节数，协议规定此值最大1048576，即1M）
+acregmax=（文件的属性有效时间，调小nfs客户端可能会频繁发getattr请求）      defcontext=    intr           namlen=nolock  noexec         nostrictatime  resvport       strictatime
+acregmin=（文件的属性有效时间，调小nfs客户端可能会频繁发getattr请求）      dev            iversion       _netdev        nofail         nosuid         retrans=（重传次数）       suid
+actimeo=       diratime       lookupcache= （会影响NFS客户端dentry缓存，不影响服务端）  nfsvers=（应该通vers）       nofsc（参考fsc）          nouser         retry=（重试次数）         sync（nfs客户端同步读写）
+async（nfs客户端异步读写，sync和async应该只会影响NFS客户端，具体影响没研究过）          dirsync        loop           noac           nointr         owner          rorw（挂载目录只读权限）             tcp
+atime          exec           mand           noacl          noiversion     port=          rootcontext=   timeo=
+auto           fg             mounthost=     noatime        nomand         proto=         rsize=（一次读请求的最大字节数，协议规定此值最大1048576，即1M）         udp
 ```
 # [exports参数解释](https://blog.csdn.net/qq_36357820/article/details/78488077)
 # sunrpc
