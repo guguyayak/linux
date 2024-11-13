@@ -95,6 +95,11 @@ crashkernel=auto 改为 crashkernel=1G
 
 重启主机生效
 ```
+# 基础指令
+```
+打印所有栈：
+foreach bt
+```
 # core文件分析
 
 分析vmcore文件需要安装对应版本内核的kernel-debuginfo-common和kernel-debuginfo两个RPM包
