@@ -168,3 +168,39 @@ int nfsd_setuser(struct svc_rqst *rqstp, struct svc_export *exp)
 	put_cred(override_creds(new));
 }
 ```
+
+# nfs s_op
+```
+crash> p *$4->s_op
+$9 = {
+  alloc_inode = 0xffffffffc0da87d0 <nfs_alloc_inode>,
+  destroy_inode = 0x0,
+  free_inode = 0xffffffffc0da8820 <nfs_free_inode>,
+  dirty_inode = 0x0,
+  write_inode = 0xffffffffc0db80a0 <nfs_write_inode>,
+  drop_inode = 0xffffffffc0da89a0 <nfs_drop_inode>,
+  evict_inode = 0xffffffffc0daa220 <nfs_evict_inode>,
+  put_super = 0x0,
+  sync_fs = 0x0,
+  freeze_super = 0x0,
+  freeze_fs = 0x0,
+  thaw_super = 0x0,
+  unfreeze_fs = 0x0,
+  statfs = 0xffffffffc0dab200 <nfs_statfs>,
+  remount_fs = 0x0,
+  umount_begin = 0xffffffffc0dabc20 <nfs_umount_begin>,
+  show_options = 0xffffffffc0dabb00 <nfs_show_options>,
+  show_devname = 0xffffffffc0dabb70 <nfs_show_devname>,
+  show_path = 0xffffffffc0dabb50 <nfs_show_path>,
+  show_stats = 0xffffffffc0dac7c0 <nfs_show_stats>,
+  quota_read = 0x0,
+  quota_write = 0x0,
+  get_dquots = 0x0,
+  nr_cached_objects = 0x0,
+  free_cached_objects = 0x0,
+  kabi_reserved1 = 0,
+  kabi_reserved2 = 0,
+  kabi_reserved3 = 0,
+  kabi_reserved4 = 0
+}
+```
