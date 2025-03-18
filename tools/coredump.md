@@ -466,4 +466,8 @@ crash: please use the vmlinux file for that kernel version, or try using
        the System.map for that kernel version as an additional argument.
 
 用vi打开那个vmlinux文件 搜索一下/proc/version那部分  里面会显示字符串相关信息的   把那个编译时间相关的字段改成和/proc/version的时间字段一样
+示例：
+[root@cnode106 127.0.0.1-2025-03-17-16:17:28]# cat /proc/version
+Linux version 3.10.0-1160.71.1.el7.x86_64 (mockbuild@kbuilder.bsys.centos.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-44) (GCC) ) #1 SMP Tue Jun 28 15:37:28 UTC 2022
+搜索 "Linux version 3.10.0-1160.71.1.el7.x86_64" 找到对应字符串
 ```
