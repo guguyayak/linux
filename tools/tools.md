@@ -16,3 +16,7 @@ nodelist 文件保存节点ip
 > -p<进程号> 列出指定进程号所打开的文件   
 # slabtop 查看系统 slab 使用情况
 # [auditd 监控文件变化](https://eternalcenter.com/auditd/)
+# 获取线程内核栈
+```
+ps -eT -o pid,tid --no-headers | xargs -n2 sh -c 'echo "PID: $0  TID: $1"; cat /proc/$0/task/$1/stack 2>/dev/null; echo "----------------------"'
+```
