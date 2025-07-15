@@ -20,3 +20,9 @@ nodelist 文件保存节点ip
 ```
 ps -eT -o pid,tid --no-headers | xargs -n2 sh -c 'echo "PID: $0  TID: $1"; cat /proc/$0/task/$1/stack 2>/dev/null; echo "----------------------"'
 ```
+```
+while true; do
+     ps -eT -o pid,tid --no-headers | xargs -n2 sh -c 'echo "PID: $0 TID: $1"; cat /proc/$0/task/$1/stack 2>/root/lllog; echo "----------------------"' > stack_file_$(date +%Y%m%d_%H%M%S)
+     sleep 20  # 每隔5秒执行一次
+ done
+```
