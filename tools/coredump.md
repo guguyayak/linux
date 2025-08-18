@@ -471,3 +471,28 @@ crash: please use the vmlinux file for that kernel version, or try using
 Linux version 3.10.0-1160.71.1.el7.x86_64 (mockbuild@kbuilder.bsys.centos.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-44) (GCC) ) #1 SMP Tue Jun 28 15:37:28 UTC 2022
 搜索 "Linux version 3.10.0-1160.71.1.el7.x86_64" 找到对应字符串
 ```
+# 锁分析锁持有者
+> 读写锁如果是写者持有，只有一个持有者，可以根据锁信息分析出持有进程；
+>  读写锁如果是读者持有，可能是多进程同时持有，无法分析持有锁的进程信息；
+> 如果没有加额外的编译参数，spin_lock锁不会记录持有锁进程信息；
+```c
+//内核判断是否是本进程在持有锁的判断方法——遍历本进程持有的锁，和要判断的锁比较是否是一把锁
+static int __lock_is_held(struct lockdep_map *lock, int read)
+{
+	struct task_struct *curr = current;
+	int i;
+
+	for (i = 0; i < curr->lockdep_depth; i++) {
+		struct held_lock *hlock = curr->held_locks + i;
+
+		if (match_held_lock(hlock, lock)) {
+			if (read == -1 || hlock->read == read)
+				return 1;
+
+			return 0;
+		}
+	}
+
+	return 0;
+}
+```
